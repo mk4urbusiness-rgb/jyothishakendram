@@ -9,6 +9,7 @@
     var l=localStorage.getItem('jk-lang')||'en';
     if(l!=='ml')l='en';
     var h=document.documentElement;h.setAttribute('data-lang',l);h.lang=l;
+    if(localStorage.getItem('jk-strip-closed')==='1')h.classList.add('strip-closed');
   }catch(e){}})();
 </script>
 <title>Jyothishakendram · Sri Ramesh Panicker · Thrissur</title>
@@ -269,16 +270,25 @@
     background:var(--cream-2);
     border:1px solid var(--rule);
     padding:28px;
-    display:flex; gap:22px; align-items:flex-start;
+    display:grid; grid-template-columns:auto minmax(0,1fr); column-gap:22px; row-gap:16px; align-items:start;
   }
+  .person .avatar{grid-row:1 / span 2}
+  .person > .phone-btn{grid-column:2;justify-self:start}
   .person .avatar{width:96px;height:120px;flex-shrink:0;background:var(--cream-3);overflow:hidden;border:1px solid var(--rule)}
   .person .avatar img{width:100%;height:100%;object-fit:cover;object-position:center 25%}
   .person .meta .role{font-family:var(--sans);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--maroon);margin-bottom:8px}
   .person .meta h4{font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 4px}
   .person .meta .mal-name{font-family:var(--mal);font-weight:700;font-size:18px;color:var(--ink-soft);margin-bottom:14px}
   .person .meta p{margin:0 0 12px;font-size:15px;line-height:1.55;color:var(--ink-soft)}
-  .person .meta .phone{font-family:var(--sans);font-size:13px;letter-spacing:.04em;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
-  .person .meta .phone::before{content:"";width:6px;height:6px;background:var(--brass);border-radius:50%}
+  .phone-btn{
+    display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:10px 18px;margin-top:4px;
+    background:var(--maroon);color:var(--cream);border:1px solid var(--maroon);
+    font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.03em;transition:background .2s;
+  }
+  .phone-btn:hover{background:var(--maroon-deep)}
+  .phone-btn .pb-num{white-space:nowrap}
+  .about-grid > *{min-width:0}
+  .phone-btn .ph-ico{width:18px;height:18px;fill:currentColor;flex-shrink:0}
 
   /* ──────────────  SERVICES  ────────────── */
   .services-grid{
@@ -542,8 +552,20 @@
   .v-block .label{color:rgba(245,233,208,0.6);display:block;margin-bottom:10px}
   .v-block .v{font-family:var(--serif);font-size:19px;line-height:1.45;color:#fbecc8}
   .v-block .v.ml{font-family:var(--mal);font-weight:400;font-size:17px;color:rgba(245,233,208,0.85);margin-top:4px}
-  .v-block .nums{display:flex;flex-wrap:wrap;gap:18px;margin-top:8px}
-  .v-block .nums a{font-family:var(--sans);font-size:15px;letter-spacing:.04em;color:#fbecc8;display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid rgba(184,134,11,0.6);padding-bottom:2px}
+  .call-btns{display:flex;flex-direction:column;gap:12px;margin-top:6px;max-width:440px}
+  .call-btn{
+    display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 18px;
+    background:#fbecc8;color:var(--maroon-deep);border:1px solid var(--brass);
+    box-shadow:0 6px 18px -10px rgba(0,0,0,.45);transition:background .2s, transform .15s;
+  }
+  .call-btn:hover{background:#fff4d9}
+  .call-btn:active{transform:translateY(1px)}
+  .call-btn .cb-ico{width:40px;height:40px;border-radius:50%;background:var(--maroon);display:grid;place-items:center;flex-shrink:0}
+  .call-btn .ph-ico{width:20px;height:20px;fill:#fbecc8}
+  .call-btn .cb-text{display:flex;flex-direction:column;line-height:1.25}
+  .call-btn .cb-label{font-family:var(--sans);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--maroon)}
+  .call-btn .cb-num{font-family:var(--sans);font-size:20px;font-weight:600;letter-spacing:.03em;color:var(--ink);font-variant-numeric:tabular-nums}
+  html[data-lang="ml"] .call-btn .cb-label{font-size:15px;letter-spacing:0;font-weight:700}
 
   .form-card{background:var(--cream);color:var(--ink);padding:40px}
   @media (max-width:560px){.form-card{padding:28px 22px}}
@@ -633,6 +655,29 @@
   html[data-lang="ml"] .pull{font-size:21px}
   html[data-lang="ml"] .article-aside{font-size:16px;line-height:1.75}
 
+  /* ──────────────  Language hint strip  ────────────── */
+  .lang-strip{background:var(--maroon);color:var(--cream);border-bottom:1px solid var(--maroon-deep)}
+  html.strip-closed .lang-strip{display:none}
+  .lang-strip-inner{max-width:1320px;margin:0 auto;padding:0 48px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative}
+  .lang-strip-btn{
+    flex:1;min-height:44px;padding:8px 36px;
+    font-family:var(--mal);font-size:15.5px;font-weight:700;line-height:1.4;color:var(--cream);text-align:center;
+  }
+  .lang-strip-btn span{display:inline-block;transition:transform .2s}
+  .lang-strip-btn:hover span{transform:translateX(3px)}
+  .lang-strip-btn:hover{color:#fff}
+  .lang-strip-close{
+    position:absolute;right:36px;top:50%;transform:translateY(-50%);
+    width:40px;height:40px;display:grid;place-items:center;font-size:16px;color:rgba(245,233,208,.8);
+  }
+  .lang-strip-close:hover{color:#fff}
+  .lang-strip :focus-visible{outline:2px solid var(--brass-soft);outline-offset:-2px}
+  @media (max-width:760px){
+    .lang-strip-inner{padding:0 8px 0 16px}
+    .lang-strip-btn{padding:8px 40px 8px 0;font-size:14.5px;text-align:left}
+    .lang-strip-close{right:4px}
+  }
+
   /* ──────────────  Language toggle  ────────────── */
   .top-actions{display:flex;align-items:center;gap:14px;flex-shrink:0}
   .lang-toggle{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--rule);background:var(--paper);flex-shrink:0}
@@ -713,8 +758,8 @@
     .lightbox img, .lightbox video{max-height:80vh;max-height:80dvh}
 
     .v-info h3{font-size:26px}
-    .v-block .nums{flex-direction:column;gap:14px}
-    .v-block .nums a{font-size:16px;padding:6px 0 4px;align-self:flex-start}
+    .call-btns{max-width:none}
+    .call-btn .cb-num{font-size:19px}
 
     footer{padding:44px 0 calc(32px + env(safe-area-inset-bottom))}
     .foot-grid{flex-direction:column;align-items:flex-start}
@@ -729,7 +774,9 @@
     .hero-facts .fact:last-child{grid-column:1 / -1}
     .portrait .caption{left:20px;right:20px;bottom:20px}
     .credentials{gap:0}
-    .person{padding:20px;gap:16px}
+    .person{padding:20px;column-gap:16px}
+    .person .avatar{grid-row:auto}
+    .person > .phone-btn{grid-column:1 / -1;justify-self:stretch;justify-content:center;font-size:15px;min-height:50px}
     .person .avatar{width:76px;height:96px}
     .person .meta h4{font-size:21px}
     .lamp-panel{min-height:240px}
@@ -741,7 +788,7 @@
   @media (max-width:360px){
     .container{padding:0 18px}
     .hero-facts{grid-template-columns:1fr}
-    .person{flex-direction:column}
+    .person{grid-template-columns:1fr}
   }
 
   /* Touch devices: no hover-lift, larger tap feedback */
@@ -791,6 +838,14 @@
     </div>
   </div>
 </header>
+
+<!-- Language hint (client request) — shown in Malayalam in both modes -->
+<div class="lang-strip" id="langStrip">
+  <div class="lang-strip-inner">
+    <button type="button" class="lang-strip-btn" id="langStripBtn">മലയാളം / ഇംഗ്ലീഷ് മാറി കാണുവാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക <span aria-hidden="true">→</span></button>
+    <button type="button" class="lang-strip-close" id="langStripClose" aria-label="Close" data-ml-aria-label="അടയ്ക്കുക">✕</button>
+  </div>
+</div>
 
 <nav class="mob-menu" id="mobMenu" aria-label="Mobile" data-ml-aria-label="മൊബൈൽ മെനു">
   <a href="#home"><span lang="en">Home</span><span lang="ml">ഹോം</span></a>
@@ -909,7 +964,7 @@
           </div>
           <div class="c">
             <span class="label"><span lang="en">Recognition</span><span lang="ml">അംഗീകാരം</span></span>
-            <div class="v fs19"><span lang="en">Ottapalam Abhili Award · 2024</span><span lang="ml">ഒറ്റപ്പാലം അഭിലി പുരസ്കാരം · 2024</span></div>
+            <div class="v fs19"><span lang="en">Abhili Award · 2024</span><span lang="ml">അഭിലി പുരസ്കാരം · 2024</span></div>
           </div>
           <div class="c">
             <span class="label"><span lang="en">Featured at</span><span lang="ml">പങ്കെടുത്ത വേദി</span></span>
@@ -928,8 +983,8 @@
               <div class="role"><span lang="en">Senior Acharya</span><span lang="ml">മുതിർന്ന ആചാര്യൻ</span></div>
               <h4><span lang="en">Sri Ramesh Panicker</span><span lang="ml">ശ്രീ രമേഷ് പണിക്കർ</span></h4>
               <p style="font-size: 18px"><span lang="en">Jathakam reading, Ashtamangala Prashnam, parihara &amp; long-form counsel.</span><span lang="ml">ജാതക വിചാരം, അഷ്ടമംഗല പ്രശ്നം, പരിഹാര കർമ്മങ്ങൾ, വിശദമായ മാർഗ്ഗനിർദ്ദേശം.</span></p>
-              <a href="tel:+918086415656" class="phone">+91 80864 15656</a>
             </div>
+            <a href="tel:+918086415656" class="phone-btn"><svg class="ph-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg><span class="pb-txt"><span lang="en">Call</span><span lang="ml">വിളിക്കുക</span> · <span class="pb-num">+91 80864 15656</span></span></a>
           </div>
         </div>
       </div>
@@ -973,7 +1028,7 @@
       <div class="svc">
         <span class="svc-num"><span lang="en">04 · Ashtamangala Prashnam</span><span lang="ml">04 · അഷ്ടമംഗല പ്രശ്നം</span></span>
         <h3><span lang="en">The Long Reading</span><span lang="ml">വിശദ പ്രശ്നവിചാരം</span></h3>
-        <p class="fs21"><span lang="en">The ceremonial eight-fold prashnam, undertaken at a temple or family ksherthram to read a question whose roots run into the household and lineage. Conducted with a second pandit; takes a half-day.</span><span lang="ml">കുടുംബത്തിലേക്കും തലമുറകളിലേക്കും വേരുകൾ നീളുന്ന ചോദ്യങ്ങൾ വിചാരം ചെയ്യാൻ, ക്ഷേത്രത്തിലോ കുടുംബക്ഷേത്രത്തിലോ വെച്ച് നടത്തുന്ന ആചാരപരമായ അഷ്ടമംഗല പ്രശ്നം. മറ്റൊരു ജ്യോതിഷ പണ്ഡിതനോടൊപ്പം നടത്തുന്നു; അര ദിവസം വേണ്ടിവരും.</span></p>
+        <p class="fs21"><span lang="en">The ceremonial eight-fold prashnam, undertaken at a temple or family ksherthram to read a question whose roots run into the household and lineage. Conducted with a second pandit; takes more than half a day.</span><span lang="ml">കുടുംബത്തിലേക്കും തലമുറകളിലേക്കും വേരുകൾ നീളുന്ന ചോദ്യങ്ങൾ വിചാരം ചെയ്യാൻ, ക്ഷേത്രത്തിലോ കുടുംബക്ഷേത്രത്തിലോ വെച്ച് നടത്തുന്ന ആചാരപരമായ അഷ്ടമംഗല പ്രശ്നം. മറ്റൊരു ജ്യോതിഷ പണ്ഡിതനോടൊപ്പം നടത്തുന്നു; അര ദിവസത്തിലധികം വേണ്ടിവരും.</span></p>
         <a class="more" href="#visit"><span lang="en">Enquire</span><span lang="ml">അന്വേഷിക്കുക</span></a>
       </div>
     </div>
@@ -1195,8 +1250,8 @@
         <div class="play-icon"><span></span></div>
         <div class="caption-b"><span lang="en">A short film from the consultation room</span><span lang="ml">കൺസൾട്ടേഷൻ മുറിയിൽ നിന്നുള്ള ഒരു ചെറു വീഡിയോ</span></div>
       </div>
-      <div class="tile t-1" data-image="assets/award-plaque.webp" data-cap="Memento — Ottapalam Abhili, 2024" data-cap-ml="സ്മരണിക — ഒറ്റപ്പാലം അഭിലി, 2024">
-        <img loading="lazy" decoding="async" src="assets/award-plaque-sm.webp" srcset="assets/award-plaque-sm.webp 720w, assets/award-plaque.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="Award plaque — Ottapalam Abhili, 2024" data-ml-alt="പുരസ്കാര ഫലകം — ഒറ്റപ്പാലം അഭിലി, 2024" />
+      <div class="tile t-1" data-image="assets/award-plaque.webp" data-cap="Memento — Abhili Award, 2024" data-cap-ml="സ്മരണിക — അഭിലി പുരസ്കാരം, 2024">
+        <img loading="lazy" decoding="async" src="assets/award-plaque-sm.webp" srcset="assets/award-plaque-sm.webp 720w, assets/award-plaque.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="Award plaque — Abhili Award, 2024" data-ml-alt="പുരസ്കാര ഫലകം — അഭിലി പുരസ്കാരം, 2024" />
         <span class="tag">2024</span>
       </div>
       <div class="tile t-2" data-image="assets/puja-kalam.webp" data-cap="Kalamezhuthu pattu at the family kshetram" data-cap-ml="കുടുംബക്ഷേത്രത്തിലെ കളമെഴുത്തുപാട്ട്">
@@ -1264,9 +1319,15 @@
 
         <div class="v-block">
           <span class="label"><span lang="en">Speak to the practice</span><span lang="ml">ഫോണിൽ ബന്ധപ്പെടാം</span></span>
-          <div class="nums">
-            <a href="tel:+918086415656">+91 80864 15656 · <span lang="en">Ramesh Panicker</span><span lang="ml">രമേഷ് പണിക്കർ</span></a>
-            <a href="tel:+919495551230">+91 94955 51230 · <span lang="en">Office</span><span lang="ml">ഓഫീസ്</span></a>
+          <div class="call-btns">
+            <a class="call-btn" href="tel:+918086415656">
+              <span class="cb-ico"><svg class="ph-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg></span>
+              <span class="cb-text"><span class="cb-label"><span lang="en">Call Ramesh Panicker</span><span lang="ml">രമേഷ് പണിക്കരെ വിളിക്കുക</span></span><span class="cb-num">+91 80864 15656</span></span>
+            </a>
+            <a class="call-btn" href="tel:+919495551230">
+              <span class="cb-ico"><svg class="ph-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg></span>
+              <span class="cb-text"><span class="cb-label"><span lang="en">Call the Office</span><span lang="ml">ഓഫീസിൽ വിളിക്കുക</span></span><span class="cb-num">+91 94955 51230</span></span>
+            </a>
           </div>
         </div>
 

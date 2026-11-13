@@ -82,6 +82,15 @@
   document.querySelectorAll('[data-set-lang]').forEach(b =>
     b.addEventListener('click', () => { if (b.dataset.setLang !== lang) setLang(b.dataset.setLang, true); }));
 
+  /* Language hint strip — tap to flip the language; ✕ hides it for good */
+  const stripBtn = document.getElementById('langStripBtn');
+  const stripClose = document.getElementById('langStripClose');
+  if (stripBtn) stripBtn.addEventListener('click', () => setLang(lang === 'ml' ? 'en' : 'ml', true));
+  if (stripClose) stripClose.addEventListener('click', () => {
+    root.classList.add('strip-closed');
+    try { localStorage.setItem('jk-strip-closed', '1'); } catch (_) {}
+  });
+
   /* ──────────────  MOBILE MENU  ────────────── */
   const menuBtn = document.getElementById('menuToggle');
   const mobMenu = document.getElementById('mobMenu');
