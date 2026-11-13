@@ -5,16 +5,91 @@
 (function () {
   'use strict';
 
+  /* ──────────────  LANGUAGE (EN / ML)  ──────────────
+     All copy lives in the HTML twice (lang="en" / lang="ml"); CSS shows only
+     the active one. JS handles the bits CSS can't: attributes (alt,
+     placeholder, aria-label), <option> text, the page title, and strings
+     this script writes itself.
+  */
+  const STR = {
+    en: {
+      title: 'Jyothishakendram · Sri Ramesh Panicker · Thrissur',
+      menu: 'Menu', close: 'Close', openMenu: 'Open menu', closeMenu: 'Close menu',
+      read: 'Read the full essay', collapse: 'Collapse the essay',
+      play: 'Play introduction', pause: 'Pause introduction'
+    },
+    ml: {
+      title: 'Jyothishakendram · ശ്രീ രമേഷ് പണിക്കർ · തൃശ്ശൂർ',
+      menu: 'മെനു', close: 'അടയ്ക്കൂ', openMenu: 'മെനു തുറക്കുക', closeMenu: 'മെനു അടയ്ക്കുക',
+      read: 'ലേഖനം മുഴുവൻ വായിക്കുക', collapse: 'ലേഖനം ചുരുക്കുക',
+      play: 'ആമുഖം കേൾക്കുക', pause: 'ആമുഖം നിർത്തുക'
+    }
+  };
+  const root = document.documentElement;
+  let lang = root.getAttribute('data-lang') === 'ml' ? 'ml' : 'en';
+  const t = (k) => STR[lang][k];
+  const langListeners = [];
+
+  function swapLocalised() {
+    ['alt', 'placeholder', 'aria-label'].forEach(attr => {
+      document.querySelectorAll(`[data-ml-${attr}]`).forEach(el => {
+        const enKey = `data-en-${attr}`;
+        if (!el.hasAttribute(enKey)) el.setAttribute(enKey, el.getAttribute(attr) || '');
+        el.setAttribute(attr, el.getAttribute(lang === 'ml' ? `data-ml-${attr}` : enKey));
+      });
+    });
+    document.querySelectorAll('[data-ml-text]').forEach(el => {
+      if (!el.hasAttribute('data-en-text')) el.setAttribute('data-en-text', el.textContent);
+      el.textContent = el.getAttribute(lang === 'ml' ? 'data-ml-text' : 'data-en-text');
+    });
+  }
+
+  function setLang(next, fromUser) {
+    // Keep the reader's place: the two languages have different text lengths
+    let anchor = null, before = 0;
+    if (fromUser) {
+      anchor = Array.from(document.querySelectorAll('main section[id]'))
+        .find(s => s.getBoundingClientRect().bottom > 90);
+      if (anchor) before = anchor.getBoundingClientRect().top;
+    }
+
+    lang = next === 'ml' ? 'ml' : 'en';
+    root.setAttribute('data-lang', lang);
+    root.lang = lang;
+    document.title = t('title');
+    swapLocalised();
+    document.querySelectorAll('[data-set-lang]').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.setLang === lang)));
+    langListeners.forEach(fn => fn());
+
+    if (anchor) {
+      const delta = anchor.getBoundingClientRect().top - before;
+      if (Math.abs(delta) > 1) window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
+    }
+    if (fromUser) {
+      try { localStorage.setItem('jk-lang', lang); } catch (_) {}
+      // Reflect the choice in the address bar so the link can be shared
+      try {
+        const u = new URL(location.href);
+        if (lang === 'ml') u.searchParams.set('lang', 'ml'); else u.searchParams.delete('lang');
+        history.replaceState(null, '', u);
+      } catch (_) {}
+    }
+  }
+  document.querySelectorAll('[data-set-lang]').forEach(b =>
+    b.addEventListener('click', () => { if (b.dataset.setLang !== lang) setLang(b.dataset.setLang, true); }));
+
   /* ──────────────  MOBILE MENU  ────────────── */
   const menuBtn = document.getElementById('menuToggle');
   const mobMenu = document.getElementById('mobMenu');
   function setMenu(open) {
     mobMenu.classList.toggle('on', open);
     document.body.classList.toggle('menu-open', open);
-    menuBtn.textContent = open ? 'Close' : 'Menu';
+    menuBtn.textContent = open ? t('close') : t('menu');
     menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menuBtn.setAttribute('aria-label', open ? t('closeMenu') : t('openMenu'));
   }
+  langListeners.push(() => { if (menuBtn && mobMenu) setMenu(mobMenu.classList.contains('on')); });
   if (menuBtn && mobMenu) {
     menuBtn.addEventListener('click', () => setMenu(!mobMenu.classList.contains('on')));
     mobMenu.querySelectorAll('a').forEach(a =>
@@ -24,7 +99,7 @@
       if (e.key === 'Escape' && mobMenu.classList.contains('on')) setMenu(false);
     });
     // If the viewport grows past the mobile breakpoint, close the menu
-    const desktopMq = window.matchMedia('(min-width: 1081px)');
+    const desktopMq = window.matchMedia('(min-width: 1181px)');
     const onMq = () => { if (desktopMq.matches) setMenu(false); };
     desktopMq.addEventListener ? desktopMq.addEventListener('change', onMq) : desktopMq.addListener(onMq);
   }
@@ -51,10 +126,12 @@
   document.querySelectorAll('[data-article]').forEach(body => {
     const btn = body.querySelector('.read');
     if (!btn) return;
+    const sync = () => { btn.textContent = body.classList.contains('open') ? t('collapse') : t('read'); };
+    langListeners.push(sync);
     btn.addEventListener('click', () => {
       const open = body.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.firstChild.nodeValue = open ? 'Collapse the essay ' : 'Read the full essay';
+      sync();
       // When collapsing a long essay on a phone, bring its heading back into view
       if (!open) body.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -83,7 +160,7 @@
       if (tile.dataset.video) {
         openLb(`<video src="${tile.dataset.video}" controls autoplay playsinline></video>`);
       } else if (tile.dataset.image) {
-        const cap = tile.dataset.cap || '';
+        const cap = (lang === 'ml' && tile.dataset.capMl) || tile.dataset.cap || '';
         openLb(
           `<img src="${tile.dataset.image}" alt="${cap}" />` +
           (cap ? `<div class="lb-cap">${cap}</div>` : '')
@@ -258,23 +335,28 @@
         return;
       }
       playIcon.innerHTML = ICON_PAUSE;
-      playBtn.setAttribute('aria-label', 'Pause introduction');
+      playBtn.setAttribute('aria-label', t('pause'));
       tickFlame();
     } else {
       audio.pause();
       playIcon.innerHTML = ICON_PLAY;
-      playBtn.setAttribute('aria-label', 'Play introduction');
+      playBtn.setAttribute('aria-label', t('play'));
       stopTick();
     }
   });
   audio.addEventListener('ended', () => {
     playIcon.innerHTML = ICON_PLAY;
-    playBtn.setAttribute('aria-label', 'Play introduction');
+    playBtn.setAttribute('aria-label', t('play'));
     stopTick();
   });
   audio.addEventListener('pause', () => {
     if (audio.ended) return;
     playIcon.innerHTML = ICON_PLAY;
+    playBtn.setAttribute('aria-label', t('play'));
     stopTick();
   });
+  langListeners.push(() => playBtn.setAttribute('aria-label', audio.paused ? t('play') : t('pause')));
+
+  /* Apply the initial language (set pre-paint in <head>) to JS-driven strings */
+  setLang(lang, false);
 })();
