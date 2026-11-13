@@ -68,14 +68,17 @@
     }
     if (fromUser) {
       try { localStorage.setItem('jk-lang', lang); } catch (_) {}
-      // Reflect the choice in the address bar so the link can be shared
-      try {
-        const u = new URL(location.href);
-        if (lang === 'ml') u.searchParams.set('lang', 'ml'); else u.searchParams.delete('lang');
-        history.replaceState(null, '', u);
-      } catch (_) {}
     }
   }
+
+  // One address for the whole site: tidy away a leftover ?lang=… from older links
+  try {
+    const u = new URL(location.href);
+    if (u.searchParams.has('lang')) {
+      u.searchParams.delete('lang');
+      history.replaceState(null, '', u);
+    }
+  } catch (_) {}
   document.querySelectorAll('[data-set-lang]').forEach(b =>
     b.addEventListener('click', () => { if (b.dataset.setLang !== lang) setLang(b.dataset.setLang, true); }));
 

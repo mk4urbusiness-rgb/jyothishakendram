@@ -4,10 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <script>
-  /* Apply the saved / requested language before first paint (no flash). */
+  /* Apply the saved language before first paint (no flash). */
   (function(){try{
-    var q=new URLSearchParams(location.search).get('lang');
-    var l=q||localStorage.getItem('jk-lang')||'en';
+    var l=localStorage.getItem('jk-lang')||'en';
     if(l!=='ml')l='en';
     var h=document.documentElement;h.setAttribute('data-lang',l);h.lang=l;
   }catch(e){}})();
