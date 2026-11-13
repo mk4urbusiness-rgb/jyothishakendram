@@ -1,13 +1,14 @@
 <!doctype html>
-<html lang="en" data-lang="en">
+<html lang="ml" data-lang="ml">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <script>
-  /* Apply the saved language before first paint (no flash). */
+  /* Malayalam on arrival; a switch to English lasts for this visit only. */
   (function(){try{
-    var l=localStorage.getItem('jk-lang')||'en';
-    if(l!=='ml')l='en';
+    localStorage.removeItem('jk-lang');
+    var l=sessionStorage.getItem('jk-lang')||'ml';
+    if(l!=='en')l='ml';
     var h=document.documentElement;h.setAttribute('data-lang',l);h.lang=l;
     if(localStorage.getItem('jk-strip-closed')==='1')h.classList.add('strip-closed');
   }catch(e){}})();
@@ -618,7 +619,10 @@
 
   /* ══════════════  LANGUAGE — EN / ML  ══════════════ */
   /* Every piece of copy exists twice; only the active language is shown. */
-  html[data-lang="en"] [lang="ml"], html[data-lang="ml"] [lang="en"]{display:none !important}
+  html[data-lang="en"] [lang="ml"]:not(.always), html[data-lang="ml"] [lang="en"]{display:none !important}
+  /* .always = Malayalam shown in both modes (essays, accents); .only-en / .only-ml = mode-specific extras */
+  html[data-lang="ml"] .only-en, html[data-lang="en"] .only-ml{display:none !important}
+  [lang="ml"].always{font-family:var(--mal);font-style:normal;letter-spacing:normal}
   html[data-lang="ml"] [lang="ml"]{font-family:var(--mal);font-style:normal;letter-spacing:normal}
   [lang="ml"] em{font-style:normal}
   /* The brand name stays in English letters inside Malayalam copy */
@@ -632,15 +636,12 @@
   .section-head h2.h2-about{font-size:clamp(30px, calc(30px + 2.667vw - 10px), 52px);width:100%;max-width:none;padding:0;margin:18px 0 0}
 
   /* English versions of formerly-Malayalam blocks use the serif */
-  .mal-title [lang="en"]{font-family:var(--serif);font-weight:500}
   .article-body .ml-title{font-weight:400}
   .ml-title [lang="en"]{font-family:var(--serif);font-style:italic;font-weight:500}
   .ml-title.ml-q{font-size:21px;color:var(--ink-muted);margin-top:-4px}
-  .excerpt[lang="en"], .full[lang="en"]{font-family:var(--serif) !important}
-  .full[lang="en"] h4{font-family:var(--serif);font-weight:600}
-  .about-copy p.en-body{font-style:italic;color:var(--ink-soft);line-height:1.6}
+  .ml-title.only-en + .ml-q{margin-top:-14px}
+  .article-body .full .full-sub{font-weight:700;color:var(--ink-soft);margin:-6px 0 10px}
   .blessing{font-family:var(--mal);font-size:13px;color:var(--maroon)}
-  .blessing[lang="en"]{font-family:var(--serif);font-style:italic;font-size:14px}
 
   /* Malayalam typography: no tracking, roomier lines, slightly larger UI labels */
   html[data-lang="ml"] :is(.eyebrow,.label,.kicker,.svc-num,.more,.read,.field label,.pull .src,.article-meta .num,.article-meta .kind){font-size:14px}
@@ -663,8 +664,9 @@
     flex:1;min-height:44px;padding:8px 36px;
     font-family:var(--mal);font-size:15.5px;font-weight:700;line-height:1.4;color:var(--cream);text-align:center;
   }
-  .lang-strip-btn span{display:inline-block;transition:transform .2s}
-  .lang-strip-btn:hover span{transform:translateX(3px)}
+  .lang-strip-btn .arr{display:inline-block;transition:transform .2s}
+  .lang-strip-btn:hover .arr{transform:translateX(3px)}
+  .lang-strip-btn [lang="en"]{font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:.02em}
   .lang-strip-btn:hover{color:#fff}
   .lang-strip-close{
     position:absolute;right:36px;top:50%;transform:translateY(-50%);
@@ -839,10 +841,10 @@
   </div>
 </header>
 
-<!-- Language hint (client request) — shown in Malayalam in both modes -->
+<!-- Language hint (client request) -->
 <div class="lang-strip" id="langStrip">
   <div class="lang-strip-inner">
-    <button type="button" class="lang-strip-btn" id="langStripBtn">മലയാളം / ഇംഗ്ലീഷ് മാറി കാണുവാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക <span aria-hidden="true">→</span></button>
+    <button type="button" class="lang-strip-btn" id="langStripBtn"><span lang="ml">മലയാളം / ഇംഗ്ലീഷ് മാറി കാണുവാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക</span><span lang="en">To switch between Malayalam and English, click here</span> <span class="arr" aria-hidden="true">→</span></button>
     <button type="button" class="lang-strip-close" id="langStripClose" aria-label="Close" data-ml-aria-label="അടയ്ക്കുക">✕</button>
   </div>
 </div>
@@ -869,7 +871,7 @@
         </div>
 
         <h1><span lang="en">A thoughtful reading of <em>your stars</em>.</span><span lang="ml">നിങ്ങളുടെ <em>നക്ഷത്രങ്ങളുടെ</em> ശ്രദ്ധാപൂർവ്വമായ വായന.</span></h1>
-        <p class="mal-title"><span lang="en">Jyothishakendram · Sri Ramesh Panicker</span><span lang="ml"><span class="brand-word">Jyothishakendram</span> · ശ്രീ രമേഷ് പണിക്കർ</span></p>
+        <p class="mal-title"><span lang="ml" class="always only-en">ജ്യോതിഷകേന്ദ്രം · ശ്രീ രമേഷ് പണിക്കർ</span><span lang="ml"><span class="brand-word">Jyothishakendram</span> · ശ്രീ രമേഷ് പണിക്കർ</span></p>
 
         <p class="lede">
           <span lang="en">A Kerala Jyothisha practice in the classical Parashari tradition — counsel offered with patience, in Malayalam and English, from a consultation room beside Thrissur Round.</span>
@@ -924,7 +926,7 @@
     <div class="section-head" style="grid-template-columns:1fr;gap:24px;margin-bottom:56px">
       <div>
         <span class="eyebrow"><span lang="en">The Acharya</span><span lang="ml">ആചാര്യൻ</span></span>
-        <div class="ml-h" lang="ml">പണിക്കരെക്കുറിച്ച്</div>
+        <div class="ml-h">പണിക്കരെക്കുറിച്ച്</div>
       </div>
       <div>
         <h2 class="h2-about"><span lang="en">Forty years at the <em>jathaka</em> table — and the same quiet question every visit: <em>“What is the truth in this chart?”</em></span><span lang="ml"><em>ജാതക</em> മേശയ്ക്കരികിൽ നാൽപ്പത് വർഷം — ഓരോ സന്ദർശനത്തിലും ഒരേ ശാന്തമായ ചോദ്യം: <em>“ഈ ഗ്രഹനിലയിലെ സത്യം എന്താണ്?”</em></span></h2>
@@ -944,11 +946,8 @@
         <p class="fs21" lang="ml">
           തൃശ്ശൂർ റൗണ്ടിനരികിലെ ഒരേ മുറിയിൽ നിന്നാണ് ശ്രീ രമേഷ് പണിക്കർ തന്റെ ഔദ്യോഗിക ജീവിതത്തിന്റെ ഏറിയ പങ്കും ജ്യോതിഷ കൺസൾട്ടേഷൻ നടത്തിയിട്ടുള്ളത്. <span class="brand-word">Jyothishakendram</span> — ജ്യോതിഷത്തിന്റെ കേന്ദ്രം — ഒരു ചെറിയ ക്ലിനിക്കായാണ് പ്രവർത്തിക്കുന്നത്; ദൈർഘ്യമേറിയ പ്രശ്നവും അഷ്ടമംഗലവും എക്കാലവും വിചാരം ചെയ്തിരുന്ന അതേ സാവധാനതയോടെ ഇന്നും നടത്തുന്നു.
         </p>
-        <p class="ml-body fs22" lang="ml">
+        <p class="ml-body fs22 always" lang="ml">
           ജ്യോതിഷം ഒരു കണക്കുകൂട്ടലല്ല — അത് ജീവിതം നന്നാക്കാനുള്ള ഒരു വഴികാട്ടിയാണ്. ജാതകം നോക്കുമ്പോൾ ഞങ്ങൾ പറയുന്നത് ഭാവിയല്ല, വർത്തമാനത്തിലെ ഉത്തരവാദിത്തമാണ്.
-        </p>
-        <p class="en-body fs22" lang="en">
-          Jyotisha is not a calculation — it is a guide for setting life right. When we read a horoscope, what we speak of is not the future, but the responsibility of the present.
         </p>
 
         <div class="pull">
@@ -960,7 +959,7 @@
         <div class="credentials">
           <div class="c">
             <span class="label"><span lang="en">Conferred</span><span lang="ml">ആദരവ്</span></span>
-            <div class="v fs19"><span lang="en">Honoured — 2026, Akhila Kerala Jyothishashastra Mandalam</span><span lang="ml">ആദരവ് — 2026, അഖില കേരള ജ്യോതിഷശാസ്ത്ര മണ്ഡലം</span></div>
+            <div class="v fs19"><span lang="en">ആദരവ് — 2026, Akhila Kerala Jyothishashastra Mandalam</span><span lang="ml">ആദരവ് — 2026, അഖില കേരള ജ്യോതിഷശാസ്ത്ര മണ്ഡലം</span></div>
           </div>
           <div class="c">
             <span class="label"><span lang="en">Recognition</span><span lang="ml">അംഗീകാരം</span></span>
@@ -982,6 +981,7 @@
             <div class="meta">
               <div class="role"><span lang="en">Senior Acharya</span><span lang="ml">മുതിർന്ന ആചാര്യൻ</span></div>
               <h4><span lang="en">Sri Ramesh Panicker</span><span lang="ml">ശ്രീ രമേഷ് പണിക്കർ</span></h4>
+              <div class="mal-name always only-en" lang="ml">ശ്രീ രമേഷ് പണിക്കർ</div>
               <p style="font-size: 18px"><span lang="en">Jathakam reading, Ashtamangala Prashnam, parihara &amp; long-form counsel.</span><span lang="ml">ജാതക വിചാരം, അഷ്ടമംഗല പ്രശ്നം, പരിഹാര കർമ്മങ്ങൾ, വിശദമായ മാർഗ്ഗനിർദ്ദേശം.</span></p>
             </div>
             <a href="tel:+918086415656" class="phone-btn"><svg class="ph-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg><span class="pb-txt"><span lang="en">Call</span><span lang="ml">വിളിക്കുക</span> · <span class="pb-num">+91 80864 15656</span></span></a>
@@ -998,7 +998,7 @@
     <div class="section-head">
       <div>
         <span class="eyebrow"><span lang="en">What is offered</span><span lang="ml">ഇവിടെ ലഭിക്കുന്നത്</span></span>
-        <div class="ml-h" lang="ml">സേവനങ്ങൾ</div>
+        <div class="ml-h">സേവനങ്ങൾ</div>
       </div>
       <div>
         <h2><span lang="en">Four classical readings — held to <em>shastra,</em> not shortcut.</span><span lang="ml">നാല് ശാസ്ത്രീയ വിചാരങ്ങൾ — കുറുക്കുവഴികളല്ല, <em>ശാസ്ത്രം</em> അനുസരിച്ച്.</span></h2>
@@ -1010,24 +1010,28 @@
       <div class="svc">
         <span class="svc-num"><span lang="en">01 · Prashnam</span><span lang="ml">01 · പ്രശ്നം</span></span>
         <h3><span lang="en">The Question</span><span lang="ml">ചോദ്യവിചാരം</span></h3>
+        <div class="ml-name always only-en" lang="ml">പ്രശ്നം</div>
         <p class="fs22"><span lang="en">A reading taken at the moment the question itself is asked. Useful when the birth time is unknown, when a single decision is pressing, or when the matter resists the natal chart's frame. Conducted with shells and the prashna marg.</span><span lang="ml">ചോദ്യം ചോദിക്കുന്ന നിമിഷത്തെ അടിസ്ഥാനമാക്കിയുള്ള വിചാരം. ജനനസമയം അറിയാത്തപ്പോഴും, ഒരു തീരുമാനം അടിയന്തിരമായി എടുക്കേണ്ടപ്പോഴും, ജാതകത്തിന്റെ ചട്ടക്കൂടിൽ ഒതുങ്ങാത്ത വിഷയങ്ങളിലും ഇത് ഉപകാരപ്രദമാണ്. കവടിയും പ്രശ്നമാർഗ്ഗവും ഉപയോഗിച്ച് നടത്തുന്നു.</span></p>
         <a class="more" href="#visit"><span lang="en">Enquire</span><span lang="ml">അന്വേഷിക്കുക</span></a>
       </div>
       <div class="svc">
         <span class="svc-num"><span lang="en">02 · Jathakam</span><span lang="ml">02 · ജാതകം</span></span>
         <h3><span lang="en">The Natal Reading</span><span lang="ml">ജാതക വിചാരം</span></h3>
+        <div class="ml-name always only-en" lang="ml">ജാതകം</div>
         <p class="fs21"><span lang="en">A full Parashari analysis of the birth chart — the dashas, bhavas, and yogas read carefully across a life. Two-hour first consultation; subsequent revisits short. Written summary handed over in Malayalam, English on request.</span><span lang="ml">ജനന ഗ്രഹനിലയുടെ സമ്പൂർണ്ണ പരാശരി വിശകലനം — ജീവിതകാലം മുഴുവനുമുള്ള ദശകളും ഭാവങ്ങളും യോഗങ്ങളും സൂക്ഷ്മമായി പരിശോധിക്കുന്നു. ആദ്യ കൺസൾട്ടേഷൻ രണ്ട് മണിക്കൂർ; തുടർസന്ദർശനങ്ങൾ ചുരുങ്ങിയ സമയം മാത്രം. എഴുതിത്തയ്യാറാക്കിയ സംഗ്രഹം മലയാളത്തിൽ നൽകും; ആവശ്യമെങ്കിൽ ഇംഗ്ലീഷിലും.</span></p>
         <a class="more" href="#visit"><span lang="en">Enquire</span><span lang="ml">അന്വേഷിക്കുക</span></a>
       </div>
       <div class="svc">
         <span class="svc-num"><span lang="en">03 · Muhurtham</span><span lang="ml">03 · മുഹൂർത്തം</span></span>
         <h3><span lang="en">The Auspicious Hour</span><span lang="ml">ശുഭ മുഹൂർത്തം</span></h3>
+        <div class="ml-name always only-en" lang="ml">മുഹൂർത്തം</div>
         <p class="fs21"><span lang="en">Selection of the right hour for marriage, gruhapravesham, namakaranam, or the opening of a new venture. Cross-checked against the family panchangam and the immediate sky.</span><span lang="ml">വിവാഹം, ഗൃഹപ്രവേശം, നാമകരണം, പുതിയ സംരംഭങ്ങളുടെ തുടക്കം എന്നിവയ്ക്ക് അനുയോജ്യമായ മുഹൂർത്തം നിശ്ചയിക്കുന്നു. കുടുംബ പഞ്ചാംഗവും അപ്പോഴത്തെ ഗ്രഹസ്ഥിതിയും ഒത്തുനോക്കി ഉറപ്പാക്കുന്നു.</span></p>
         <a class="more" href="#visit"><span lang="en">Enquire</span><span lang="ml">അന്വേഷിക്കുക</span></a>
       </div>
       <div class="svc">
         <span class="svc-num"><span lang="en">04 · Ashtamangala Prashnam</span><span lang="ml">04 · അഷ്ടമംഗല പ്രശ്നം</span></span>
         <h3><span lang="en">The Long Reading</span><span lang="ml">വിശദ പ്രശ്നവിചാരം</span></h3>
+        <div class="ml-name always only-en" lang="ml">അഷ്ടമംഗല പ്രശ്നം</div>
         <p class="fs21"><span lang="en">The ceremonial eight-fold prashnam, undertaken at a temple or family ksherthram to read a question whose roots run into the household and lineage. Conducted with a second pandit; takes more than half a day.</span><span lang="ml">കുടുംബത്തിലേക്കും തലമുറകളിലേക്കും വേരുകൾ നീളുന്ന ചോദ്യങ്ങൾ വിചാരം ചെയ്യാൻ, ക്ഷേത്രത്തിലോ കുടുംബക്ഷേത്രത്തിലോ വെച്ച് നടത്തുന്ന ആചാരപരമായ അഷ്ടമംഗല പ്രശ്നം. മറ്റൊരു ജ്യോതിഷ പണ്ഡിതനോടൊപ്പം നടത്തുന്നു; അര ദിവസത്തിലധികം വേണ്ടിവരും.</span></p>
         <a class="more" href="#visit"><span lang="en">Enquire</span><span lang="ml">അന്വേഷിക്കുക</span></a>
       </div>
@@ -1041,7 +1045,7 @@
     <div class="section-head">
       <div>
         <span class="eyebrow"><span lang="en">Listen In</span><span lang="ml">കേൾക്കാം</span></span>
-        <div class="ml-h" lang="ml" style="color:#e8d8a8">പരിചയം</div>
+        <div class="ml-h" style="color:#e8d8a8">പരിചയം</div>
       </div>
       <div>
         <h2><span lang="en">A brief introduction to the practice. <em>Light the lamp; listen.</em></span><span lang="ml">ഞങ്ങളെക്കുറിച്ച് ഒരു ചെറു പരിചയം. <em>വിളക്ക് തെളിയിക്കൂ; കേൾക്കൂ.</em></span></h2>
@@ -1067,8 +1071,9 @@
       </div>
 
       <div class="voice-meta">
-        <span class="kicker"><span lang="en">Audio introduction · in Malayalam · ~ 2 minutes</span><span lang="ml">ശബ്ദ പരിചയം · മലയാളം · ~ 2 മിനിറ്റ്</span></span>
+        <span class="kicker"><span lang="en">Audio introduction · Malayalam · ~ a few minutes</span><span lang="ml">ശബ്ദ പരിചയം · മലയാളം · ~ 2 മിനിറ്റ്</span></span>
         <h3><span lang="en">A welcome to <em>Jyothishakendram</em></span><span lang="ml">സ്വാഗതം — <em class="brand-word">Jyothishakendram</em></span></h3>
+        <p class="ml-sub always only-en" lang="ml" style="font-size: clamp(22px, calc(22px + 0.606vw - 2.27px), 27px); font-weight: 400">ജ്യോതിഷകേന്ദ്രത്തിലേക്ക് സ്വാഗതം</p>
         <p class="desc" style="font-size: 18px"><span lang="en">A short narrated introduction to Jyothishakendram — the four services on offer, the spirit in which they are given, and what a first visitor can expect.</span><span lang="ml">ഇവിടെ ലഭിക്കുന്ന നാല് സേവനങ്ങൾ, അവ നൽകുന്നതിന്റെ സമീപനം, ആദ്യമായി വരുന്ന ഒരാൾക്ക് പ്രതീക്ഷിക്കാവുന്നത് — ഇവയെക്കുറിച്ചുള്ള ഒരു ചെറു ശബ്ദവിവരണം.</span></p>
 
         <div class="wave" id="wave" role="slider" aria-label="Audio progress" data-ml-aria-label="ഓഡിയോ പുരോഗതി" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"></div>
@@ -1092,69 +1097,38 @@
     <div class="section-head">
       <div>
         <span class="eyebrow"><span lang="en">Writings</span><span lang="ml">ആചാര്യന്റെ തൂലികയിൽ</span></span>
-        <div class="ml-h" lang="ml">ലേഖനങ്ങൾ</div>
+        <div class="ml-h">എഴുത്തുകൾ</div>
       </div>
       <div>
         <h2><span lang="en">Short essays on shastra, written by the Acharya for the families he reads for.</span><span lang="ml">ആചാര്യൻ താൻ ജാതകം നോക്കുന്ന കുടുംബങ്ങൾക്കായി എഴുതിയ, ശാസ്ത്രത്തെക്കുറിച്ചുള്ള ചെറു ലേഖനങ്ങൾ.</span></h2>
-        <p class="lead fs21"><span lang="en">Both essays were written and circulated in Malayalam; they are given here in English translation. Use the language switch at the top to read the originals.</span><span lang="ml">രണ്ട് ലേഖനങ്ങളും പ്രചരിപ്പിച്ച അതേ രൂപത്തിൽ, മൂല മലയാളത്തിൽ ഇവിടെ നൽകിയിരിക്കുന്നു.</span></p>
+        <p class="lead fs21"><span lang="en">Both pieces appear here in their original Malayalam, as they were circulated.</span><span lang="ml">രണ്ട് ലേഖനങ്ങളും പ്രചരിപ്പിച്ച അതേ രൂപത്തിൽ, മൂല മലയാളത്തിൽ ഇവിടെ നൽകിയിരിക്കുന്നു.</span></p>
       </div>
     </div>
 
     <div class="articles">
 
-      <!-- Article 1 -->
+      <!-- Article 1 — the Acharya's own words, Malayalam in both modes -->
       <article class="article">
         <aside class="article-meta">
           <div class="num"><span lang="en">No. 01</span><span lang="ml">നം. 01</span></div>
-          <div class="kind"><span lang="en">Essay · translated from Malayalam</span><span lang="ml">ലേഖനം · മലയാളം</span></div>
+          <div class="kind"><span lang="en">Essay · Malayalam</span><span lang="ml">ലേഖനം · മലയാളം</span></div>
           <div class="date"><span lang="en">27 May 2026 · ~7 min read</span><span lang="ml">27 മെയ് 2026 · ~7 മിനിറ്റ് വായന</span></div>
         </aside>
 
         <div class="article-body" data-article>
           <h3><span lang="en">The Hidden Side of Life's Hardships</span><span lang="ml">ജീവിത ദുരിതങ്ങളുടെ കാണാപ്പുറങ്ങൾ</span></h3>
-          <p class="ml-title"><span lang="en">What Jyotisha reveals</span><span lang="ml">ജ്യോതിഷം നൽകുന്ന വെളിപ്പെടുത്തലുകൾ</span></p>
+          <p class="ml-title"><span lang="ml" class="always only-en">ജീവിത ദുരിതങ്ങളുടെ കാണാപ്പുറങ്ങൾ: ജ്യോതിഷം നൽകുന്ന വെളിപ്പെടുത്തലുകൾ</span><span lang="ml" class="only-ml">ജ്യോതിഷം നൽകുന്ന വെളിപ്പെടുത്തലുകൾ</span></p>
 
-          <p class="excerpt fs21" lang="en">Have you ever wondered what truly lies behind the sorrows and hardships that arrive in our lives without warning? Few among us have never asked, “I have harmed no one — so why does this happen to me?” The ancient texts of Jyotisha give a clear answer to this question. By analysing the fifth, second and tenth houses of our horoscope, and the planets placed in them, we can find where the roots of our suffering lie.</p>
-          <p class="excerpt fs21" lang="ml">നമ്മുടെ ജീവിതത്തിൽ അപ്രതീക്ഷിതമായി വന്നുചേരുന്ന ദുരിതങ്ങൾക്കും കഷ്ടപ്പാടുകൾക്കും പിന്നിലെ യഥാർത്ഥ കാരണം എന്താണെന്ന് നിങ്ങൾ ചിന്തിച്ചിട്ടുണ്ടോ? "ഞാൻ ആരെയും ദ്രോഹിച്ചിട്ടില്ലല്ലോ, എന്നിട്ടും എനിക്കെന്തേ ഇങ്ങനെ?" എന്ന ചോദ്യം ചോദിക്കാത്തവർ ചുരുക്കമാണ്. പുരാതന ജ്യോതിഷ ഗ്രന്ഥങ്ങൾ ഈ ചോദ്യത്തിന് വ്യക്തമായ ഉത്തരം നൽകുന്നുണ്ട്. നമ്മുടെ ജാതകത്തിലെ അഞ്ച്, രണ്ട്, പത്ത് എന്നീ ഭാവങ്ങളെയും അവയിലെ ഗ്രഹനിലകളെയും വിശകലനം ചെയ്താൽ നമ്മുടെ ദുരിതങ്ങളുടെ വേരുകൾ എവിടെയാണെന്ന് കണ്ടെത്താം.</p>
+          <p class="excerpt fs21 always" lang="ml">നമ്മുടെ ജീവിതത്തിൽ അപ്രതീക്ഷിതമായി വന്നുചേരുന്ന ദുരിതങ്ങൾക്കും കഷ്ടപ്പാടുകൾക്കും പിന്നിലെ യഥാർത്ഥ കാരണം എന്താണെന്ന് നിങ്ങൾ ചിന്തിച്ചിട്ടുണ്ടോ? "ഞാൻ ആരെയും ദ്രോഹിച്ചിട്ടില്ലല്ലോ, എന്നിട്ടും എനിക്കെന്തേ ഇങ്ങനെ?" എന്ന ചോദ്യം ചോദിക്കാത്തവർ ചുരുക്കമാണ്. പുരാതന ജ്യോതിഷ ഗ്രന്ഥങ്ങൾ ഈ ചോദ്യത്തിന് വ്യക്തമായ ഉത്തരം നൽകുന്നുണ്ട്. നമ്മുടെ ജാതകത്തിലെ അഞ്ച്, രണ്ട്, പത്ത് എന്നീ ഭാവങ്ങളെയും അവയിലെ ഗ്രഹനിലകളെയും വിശകലനം ചെയ്താൽ നമ്മുടെ ദുരിതങ്ങളുടെ വേരുകൾ എവിടെയാണെന്ന് കണ്ടെത്താം.</p>
 
-          <div class="full fs21" lang="en">
-            <h4>Three kinds of karma — mind, word and deed</h4>
-            <p>Human beings act, in the main, in three ways:</p>
+          <div class="full fs21 always" lang="ml">
+            <h4>ത്രിവിധ കർമ്മങ്ങൾ</h4>
+            <p class="full-sub">മനസ്സ്, വാക്ക്, പ്രവൃത്തി</p>
+            <p>മനുഷ്യൻ പ്രധാനമായും മൂന്ന് തരത്തിലാണ് കർമ്മങ്ങൾ ചെയ്യുന്നത്</p>
             <ul>
-              <li><strong>Chittam</strong> (mind) — the things we think within ourselves.</li>
-              <li><strong>Vakku</strong> (word) — what we speak aloud.</li>
-              <li><strong>Karmam</strong> (deed) — our physical actions.</li>
-            </ul>
-            <p>Only when all three are equally pure does a person receive blessings in full. A lapse in any one of them returns to our life as hardship.</p>
-
-            <h4>How can we recognise the causes of suffering?</h4>
-            <p>Sins of mind, word and deed: if malefic planets occupy the 2nd, 5th and 10th houses of your horoscope, it means your thoughts, words and actions were all equally harmful. When the mind is clouded, the words harsh and the actions wrong, the hardship that must be endured is severe indeed.</p>
-
-            <h4>Deeds laced with deceit</h4>
-            <p>Some people appear, from the outside, to be doing good (an auspicious tenth house). Yet within them there may be deceit, or a habit of belittling others in their speech (malefics in the 2nd and 5th houses). Such deeds tainted with ‘pretence’ are often what bring setbacks in life. Those who complain that the good they do bears no fruit should pay attention to this planetary arrangement.</p>
-
-            <h4>Careless deeds and grief through children</h4>
-            <p>One of the most important findings concerns ‘carelessness’. When the fifth house (mind and intellect) is afflicted, our attention to what we do declines. Deeds performed carelessly and without devotion bring harm rather than merit. The shastra warns that this can become the cause of deep sorrows such as the loss of children.</p>
-
-            <h4>Sins of speech and loss of wealth</h4>
-            <p>The second house signifies speech. Wounding others with our tongue and speaking untruth turn into <em>vagdosham</em> — a flaw of speech — in the horoscope. This is not merely a matter of the mind; it leads directly to the loss of wealth (financial ruin) and to quarrels within the family.</p>
-
-            <h4>The remedy lies in our own hands!</h4>
-            <p>Jyotisha is not just a calculation; it is a guide for setting life right. To be free of hardship, more than any graha puja, this is what we must do:</p>
-            <ul>
-              <li><strong>Purity of mind</strong> (manashuddhi) — sincerely wish good for others.</li>
-              <li><strong>Purity of speech</strong> (vakshuddhi) — measure your words; hurt no one.</li>
-              <li><strong>Purity of action</strong> (karmashuddhi) — do every task, however small, with complete attention and focus.</li>
-            </ul>
-            <p>We can reap only what we sow. When our mind, word and deed are equally rooted in goodness, the seasons of hardship in life pass away and peace arrives.</p>
-          </div>
-          <div class="full fs21" lang="ml">
-            <h4>ത്രിവിധ കർമ്മങ്ങൾ — മനസ്സ്, വാക്ക്, പ്രവൃത്തി</h4>
-            <p>മനുഷ്യൻ പ്രധാനമായും മൂന്ന് തരത്തിലാണ് കർമ്മങ്ങൾ ചെയ്യുന്നത്:</p>
-            <ul>
-              <li><strong>ചിത്തം</strong> (മനസ്സ്) — നാം ഉള്ളിൽ വിചാരിക്കുന്ന കാര്യങ്ങൾ.</li>
-              <li><strong>വാക്ക്</strong> — നാം പുറത്തേക്ക് സംസാരിക്കുന്നത്.</li>
-              <li><strong>കർമ്മം</strong> — നമ്മുടെ ശാരീരികമായ പ്രവൃത്തികൾ.</li>
+              <li><strong>ചിത്തം (മനസ്സ്):</strong> നാം ഉള്ളിൽ വിചാരിക്കുന്ന കാര്യങ്ങൾ.</li>
+              <li><strong>വാക്ക്:</strong> നാം പുറത്തേക്ക് സംസാരിക്കുന്നത്.</li>
+              <li><strong>കർമ്മം:</strong> നമ്മുടെ ശാരീരികമായ പ്രവൃത്തികൾ.</li>
             </ul>
             <p>ഈ മൂന്നും ഒരേപോലെ ശുദ്ധമാകുമ്പോൾ മാത്രമേ ഒരാൾക്ക് പൂർണ്ണമായ അനുഗ്രഹം ലഭിക്കുകയുള്ളൂ. ഇതിൽ എവിടെയെങ്കിലും പാളിച്ച പറ്റിയാൽ അത് ദുരിതമായി ജീവിതത്തിൽ തിരിച്ചെത്തും.</p>
 
@@ -1173,9 +1147,9 @@
             <h4>പരിഹാരം നമ്മുടെ കൈകളിൽ തന്നെയാണ്!</h4>
             <p>ജ്യോതിഷം എന്നത് വെറുമൊരു കണക്കുകൂട്ടലല്ല, അത് ജീവിതം നന്നാക്കാനുള്ള ഒരു വഴികാട്ടിയാണ്. ദുരിതങ്ങളിൽ നിന്ന് രക്ഷനേടാൻ ഗ്രഹപൂജകളേക്കാൾ ഉപരിയായി നാം ചെയ്യേണ്ടത് ഇതാണ്:</p>
             <ul>
-              <li><strong>മനഃശുദ്ധി</strong> — മറ്റുള്ളവർക്ക് നല്ലത് വരണമെന്ന് ആത്മാർത്ഥമായി ആഗ്രഹിക്കുക.</li>
-              <li><strong>വാക്ശുദ്ധി</strong> — വാക്കുകൾ മിതമാക്കുക, ആരെയും വേദനിപ്പിക്കാതിരിക്കുക.</li>
-              <li><strong>കർമ്മശുദ്ധി</strong> — ഏത് ചെറിയ കാര്യവും പൂർണ്ണമായ ശ്രദ്ധയോടും ഏകാഗ്രതയോടും കൂടി ചെയ്യുക.</li>
+              <li><strong>മനഃശുദ്ധി:</strong> മറ്റുള്ളവർക്ക് നല്ലത് വരണമെന്ന് ആത്മാർത്ഥമായി ആഗ്രഹിക്കുക.</li>
+              <li><strong>വാക്ശുദ്ധി:</strong> വാക്കുകൾ മിതമാക്കുക, ആരെയും വേദനിപ്പിക്കാതിരിക്കുക.</li>
+              <li><strong>കർമ്മശുദ്ധി:</strong> ഏത് ചെറിയ കാര്യവും പൂർണ്ണമായ ശ്രദ്ധയോടും ഏകാഗ്രതയോടും കൂടി ചെയ്യുക.</li>
             </ul>
             <p>നാം വിതയ്ക്കുന്നത് മാത്രമേ നമുക്ക് കൊയ്യാൻ സാധിക്കൂ. നമ്മുടെ മനസ്സ്, വാക്ക്, കർമ്മം എന്നിവ ഒരേപോലെ നന്മയിൽ അധിഷ്ഠിതമായാൽ ജീവിതത്തിലെ ദുരിതപർവ്വങ്ങൾ ഒഴിഞ്ഞുപോവുകയും സമാധാനം കൈവരികയും ചെയ്യും.</p>
           </div>
@@ -1184,34 +1158,28 @@
         </div>
 
         <aside class="article-aside">
-          <span lang="en">“Sins of mind, word and deed — they show themselves clearly in the second, fifth and tenth houses of the horoscope.”</span>
-          <span lang="ml">“മനസ്സാ വാചാ കർമ്മണാ ഉള്ള പാപങ്ങൾ — അവ ജാതകത്തിലെ രണ്ട്, അഞ്ച്, പത്ത് ഭാവങ്ങളിൽ വ്യക്തമായി തെളിയും.”</span>
+          <span lang="ml" class="always">“മനസ്സാ വാചാ കർമ്മണാ ഉള്ള പാപങ്ങൾ — അവ ജാതകത്തിലെ രണ്ട്, അഞ്ച്, പത്ത് ഭാവങ്ങളിൽ വ്യക്തമായി തെളിയും.”</span>
           <span class="src"><span lang="en">— from the essay</span><span lang="ml">— ലേഖനത്തിൽ നിന്ന്</span></span>
         </aside>
       </article>
 
-      <!-- Article 2 -->
+      <!-- Article 2 — the Acharya's own words, Malayalam in both modes -->
       <article class="article">
         <aside class="article-meta">
           <div class="num"><span lang="en">No. 02</span><span lang="ml">നം. 02</span></div>
-          <div class="kind"><span lang="en">Essay · translated from Malayalam</span><span lang="ml">ലേഖനം · മലയാളം</span></div>
+          <div class="kind"><span lang="en">Essay · Malayalam</span><span lang="ml">ലേഖനം · മലയാളം</span></div>
           <div class="date"><span lang="en">27 May 2026 · ~5 min read</span><span lang="ml">27 മെയ് 2026 · ~5 മിനിറ്റ് വായന</span></div>
         </aside>
 
         <div class="article-body" data-article>
-          <h3><span lang="en">The Family Deity &amp; the Family Temple</span><span lang="ml">കുടുംബ പരദേവത · കുടുംബക്ഷേത്രം</span></h3>
-          <p class="ml-title ml-q"><span lang="en">What is a family deity… and how does one come to be?</span><span lang="ml">എന്താണ് കുടുംബ പരദേവത..... കുടുംബ പരദേവത എങ്ങിനെ ഉണ്ടാകുന്നു....?</span></p>
+          <h3><span lang="en">The Family Deity &amp; the Family Temple</span><span lang="ml">കുടുംബ പരദേവത......<wbr>കുടുംബക്ഷേത്രം</span></h3>
+          <p class="ml-title only-en"><span lang="ml" class="always">കുടുംബ പരദേവത......<wbr>കുടുംബക്ഷേത്രം</span></p>
+          <p class="ml-title ml-q"><span lang="ml" class="always">എന്താണ് കുടുംബ പരദേവത..... കുടുംബ പരദേവത എങ്ങിനെ ഉണ്ടാകുന്നു....?</span></p>
 
-          <p class="excerpt fs21" lang="en">A <em>kudumba paradevata</em> — a family deity — may be understood as a deity whom the members of a family gather together to worship, or ought to worship. This deity may be a goddess or a god. In earlier times most tharavadus had many children. One of them, moved by tendencies carried over from a previous birth, would leave home for a life of renunciation and devotion… On that journey, lasting many years, he would meet many gurus and gather much knowledge… Along the way, the sannyasi would find a form of the divine and begin to worship it as his <em>upasana murthy</em>… In the end, that deity would reveal itself to him in a vision… Whatever the danger, when he called upon it, the deity's protection would be his. Having reached this state, when the sannyasi returned home with that deity, he would establish it in a family temple at a chosen spot, for the protection of his family and its line. At that consecration, the family members of the time and the sannyasi would take a solemn vow before the deity: that they, and the generations after them, would serve and worship this deity faithfully for as long as they lived… The family temples consecrated in this way are what we see in most tharavadus today.</p>
-          <p class="excerpt fs21" lang="ml">കുടുംബ പരദേവത എന്നാൽ ഒരു കുടുംബക്കാർ ഒന്നിച്ചു കൂടി ആരാധിച്ചു വരുന്ന അല്ലെങ്കിൽ ആരാധിയ്ക്കേണ്ടതായ ഒരു ദേവത എന്ന അർഥം കല്പിയ്ക്കാം. ഈ കുടുംബ പരദേവത ദേവിയോ ദേവനോ ആയിരിയ്ക്കാം. പൂർവ്വ കാലത്ത് മിക്ക തറവാടുകളിലും ധാരാളം കുട്ടികൾ ഉണ്ടാവും. അവരിൽ ഒരാൾ പൂർവ്വ ജന്മവാസന ഹേതുവായി സന്യാസത്തിനും ഭജനത്തിനും ആയി നാട് വിടുന്നു... വർഷങ്ങൾ നീളുന്ന ആ യാത്രയിൽ അവർ പല ഗുരുക്കന്മാരേയും അറിവുകളെയും നേടിയെടുക്കുന്നു.... ആ യാത്രയിൽ ആ സന്യാസി ഒരു ഉപാസനാ മൂർത്തിയെ കണ്ടെത്തി ഉപാസിയ്ക്കാൻ തുടങ്ങുന്നു... അവസാനം ആ മൂർത്തിയുടെ ദർശനം ആ സന്യാസിയ്ക്ക് അനുഭവവേദ്യമാകുന്നു..... ഏതു ആപത്തിലും വിളിച്ചാൽ ആ മൂർത്തിയുടെ സംരക്ഷണം ആ സന്യാസിയ്ക്ക് ലഭ്യമാകുന്നു. ഈ അവസ്ഥയിൽ എത്തിയ സന്യാസി വീണ്ടും ആ ദേവതയോട് കൂടി തിരിച്ചെത്തുമ്പോൾ അദ്ദേഹം ഉപാസിയ്ക്കുന്ന ആ മൂർത്തിയെ തന്റെ കുടുംബത്തിന്റെയും പരമ്പരയുടെയും സംരക്ഷണത്തിനായി ഒരു നിശ്ചിത സ്ഥലത്ത് കുടുംബ ക്ഷേത്രം ഉണ്ടാക്കി കുടിവയ്ക്കുന്നു. ഇങ്ങിനെ കുടിവയ്ക്കുന്ന ആ സന്ദർഭത്തിൽ അന്നുള്ള കുടുംബക്കാരും സന്യാസിയും ആ ദേവതയുടെ മുമ്പിൽ പ്രതിഷ്ഠാവസരത്തിൽ ഒരു സത്യ പ്രതിജ്ഞ ചൊല്ലുന്നു. ഞങ്ങളും ഞങ്ങൾക്ക് ശേഷമുള്ള പരമ്പരയും ഉള്ള കാലം ഈ ദേവതയെ വഴിപോലെ സേവിയ്ക്കുകയും ഭജിയ്ക്കുകയും ചെയ്യാം എന്ന്... ഇങ്ങിനെ കുടിവച്ചതായ കുടുംബ ക്ഷേത്രങ്ങൾ ആണ് മിക്ക തറവാടുകളിലും ഇന്ന് കണ്ടു വരുന്നത്.</p>
+          <p class="excerpt fs21 always" lang="ml">കുടുംബ പരദേവത എന്നാൽ ഒരു കുടുംബക്കാർ ഒന്നിച്ചു കൂടി ആരാധിച്ചു വരുന്ന അല്ലെങ്കിൽ ആരാധിയ്ക്കേണ്ടതായ ഒരു ദേവത എന്ന അർഥം കല്പിയ്ക്കാം. ഈ കുടുംബ പരദേവത ദേവിയോ ദേവനോ ആയിരിയ്ക്കാം. പൂർവ്വ കാലത്ത് മിക്ക തറവാടുകളിലും ധാരാളം കുട്ടികൾ ഉണ്ടാവും. അവരിൽ ഒരാൾ പൂർവ്വ ജന്മവാസന ഹേതുവായി സന്യാസത്തിനും ഭജനത്തിനും ആയി നാട് വിടുന്നു... വർഷങ്ങൾ നീളുന്ന ആ യാത്രയിൽ അവർ പല ഗുരുക്കന്മാരേയും അറിവുകളെയും നേടിയെടുക്കുന്നു.... ആ യാത്രയിൽ ആ സന്യാസി ഒരു ഉപാസനാ മൂർത്തിയെ കണ്ടെത്തി ഉപാസിയ്ക്കാൻ തുടങ്ങുന്നു... അവസാനം ആ മൂർത്തിയുടെ ദർശനം ആ സന്യാസിയ്ക്ക് അനുഭവവേദ്യമാകുന്നു..... ഏതു ആപത്തിലും വിളിച്ചാൽ ആ മൂർത്തിയുടെ സംരക്ഷണം ആ സന്യാസിയ്ക്ക് ലഭ്യമാകുന്നു. ഈ അവസ്ഥയിൽ എത്തിയ സന്യാസി വീണ്ടും ആ ദേവതയോട് കൂടി തിരിച്ചെത്തുമ്പോൾ അദ്ദേഹം ഉപാസിയ്ക്കുന്ന ആ മൂർത്തിയെ തന്റെ കുടുംബത്തിന്റെയും പരമ്പരയുടെയും സംരക്ഷണത്തിനായി ഒരു നിശ്ചിത സ്ഥലത്ത് കുടുംബ ക്ഷേത്രം ഉണ്ടാക്കി കുടിവയ്ക്കുന്നു. ഇങ്ങിനെ കുടിവയ്ക്കുന്ന ആ സന്ദർഭത്തിൽ അന്നുള്ള കുടുംബക്കാരും സന്യാസിയും ആ ദേവതയുടെ മുമ്പിൽ പ്രതിഷ്ഠാവസരത്തിൽ ഒരു സത്യ പ്രതിജ്ഞ ചൊല്ലുന്നു. ഞങ്ങളും ഞങ്ങൾക്ക് ശേഷമുള്ള പരമ്പരയും ഉള്ള കാലം ഈ ദേവതയെ വഴിപോലെ സേവിയ്ക്കുകയും ഭജിയ്ക്കുകയും ചെയ്യാം എന്ന്... ഇങ്ങിനെ കുടിവച്ചതായ കുടുംബ ക്ഷേത്രങ്ങൾ ആണ് മിക്ക തറവാടുകളിലും ഇന്ന് കണ്ടു വരുന്നത്.</p>
 
-          <div class="full fs21" lang="en">
-            <p>After the sannyasi's passing, he himself is enshrined and worshipped in the same family temple, as a yogi or guru who attained the vision of God. In some tharavadus, when the pujas at the family temple lapse and the shrine falls into ruin, many kinds of misfortune and calamity are seen. People call this the wrath of the <em>dharma daivam</em>, the family's guardian deity. But would a guardian deity, whose nature is to bless, ever become angry? No…?! What must be understood is simply that the family comes to share the same state as that abandoned shrine. The cause is the breaking of the solemn vow their ancestors made before the upasana murthy. The ancestors believed this deity was the source of all their prosperity, and worshipped it. By its grace, intelligent children were born into the family… wealth grew… But for some in the later generations, who grew up without knowing hardship, these guardian deities became a burden. They conveniently forgot them. In some tharavadus, though, certain families kept their temples alive.</p>
-
-            <p>And it is a fact of history that many of those temples have since grown into great temples.</p>
-          </div>
-          <div class="full fs21" lang="ml">
-            <p>ഈ സന്യാസിയുടെ കാലശേഷം, ഈശ്വര ദർശനം സിദ്ധിച്ച യോഗി / ഗുരു എന്ന സങ്കൽപ്പത്തിൽ ഈ കുടുംബ ക്ഷേത്രത്തിൽ തന്നെ കുടിവച്ചു ആരാധിയ്ക്കുന്നു. ചില തറവാടുകളിൽ കുടുംബ ക്ഷേത്രത്തിൽ പൂജകൾ മുടങ്ങുമ്പോളും ക്ഷേത്രം ജീർണ്ണാവസ്ഥയിൽ എത്തുംമ്പോളും പല വിധ അനിഷ്ടങ്ങളും ആപത്തുകളും കണ്ടുവരാറുണ്ട്. ധർമ്മ ദൈവ കോപം എന്ന് ഇതിനെ പറയാറുണ്ട്. എന്നാൽ അനുഗ്രഹം നല്കേണ്ട ധർമ്മ ദൈവം കോപിയ്ക്കുമൊ.... ഇല്ല....?!, അവിടെ മന:സിലാക്കേണ്ടത് അനാഥമായ ആ ദേവസ്ഥാനത്തിന്റെ തുല്യ അവസ്ഥ ആ കുടുംബാദികൾക്കും ഉണ്ടാകുന്നു എന്ന് മാത്രം. ഇങ്ങിനെ സംഭവിയ്ക്കാൻ കാരണം അവരുടെ പൂർവ്വികർ ഉപസനാ മൂർത്തിയോട് നടത്തിയ ആ സത്യപ്രതിജ്ഞാ ലംഘനം ആണ്. പൂർവ്വികർ തങ്ങളുടെ എല്ലാ ഐശ്വര്യത്തിനും കാരണം ഈ ദേവത ആണെന്ന് വിശ്വസിച്ചു ആ ദേവതയെ ആരാധിച്ചു. ആ ദേവതയുടെ അനുഗ്രഹത്താൽ ആ കുടുംബത്തിൽ നല്ല ബുദ്ധിമാന്മാരായ കുട്ടികൾ ജനിച്ചു... സമ്പത്ത് വർദ്ധിച്ചു... എന്നാൽ കഷ്ടപാട് എന്തെന്നറിയാതെ വളർന്ന പിന്നത്തെ തലമുറയിലെ ചിലർക്ക് ഈ ധർമ്മ ദൈവങ്ങൾ ഒരു അധിക പറ്റായി. അവർ അതിനെ സൌകര്യപൂർവ്വം വിസ്മരിച്ചു. ചില തറവാടുകളിൽ ചില കുടുംബങ്ങൾ അവരുടെ ക്ഷേത്രങ്ങൾ നിലനിർത്തി.</p>
+          <div class="full fs21 always" lang="ml">
+            <p>ഈ സന്യാസിയുടെ കാലശേഷം , ഈശ്വര ദർശനം സിദ്ധിച്ച യോഗി / ഗുരു എന്ന സങ്കൽപ്പത്തിൽ ഈ കുടുംബ ക്ഷേത്രത്തിൽ തന്നെ കുടിവച്ചു ആരാധിയ്ക്കുന്നു. ചില തറവാടുകളിൽ കുടുംബ ക്ഷേത്രത്തിൽ പൂജകൾ മുടങ്ങുമ്പോളും ക്ഷേത്രം ജീർണ്ണാവസ്ഥയിൽ എത്തുംമ്പോളും പല വിധ അനിഷ്ടങ്ങളും ആപത്തുകളും കണ്ടുവരാറുണ്ട്. ധർമ്മ ദൈവ കോപം എന്ന് ഇതിനെ പറയാറുണ്ട്. എന്നാൽ അനുഗ്രഹം നല്കേണ്ട ധർമ്മ ദൈവം കോപിയ്ക്കുമൊ.... ഇല്ല....?!, അവിടെ മന:സിലാക്കേണ്ടത് അനാഥമായ ആ ദേവസ്ഥാനത്തിന്റെ തുല്യ അവസ്ഥ ആ കുടുംബാദികൾക്കും ഉണ്ടാകുന്നു എന്ന് മാത്രം. ഇങ്ങിനെ സംഭവിയ്ക്കാൻ കാരണം അവരുടെ പൂർവ്വികർ ഉപസനാ മൂർത്തിയോട് നടത്തിയ ആ സത്യപ്രതിജ്ഞാ ലംഘനം ആണ്. പൂർവ്വികർ തങ്ങളുടെ എല്ലാ ഐശ്വര്യത്തിനും കാരണം ഈ ദേവത ആണെന്ന് വിശ്വസിച്ചു ആ ദേവതയെ ആരാധിച്ചു. ആ ദേവതയുടെ അനുഗ്രഹത്താൽ ആ കുടുംബത്തിൽ നല്ല ബുദ്ധിമാന്മാരായ കുട്ടികൾ ജനിച്ചു... സമ്പത്ത് വർദ്ധിച്ചു... എന്നാൽ കഷ്ടപാട് എന്തെന്നറിയാതെ വളർന്ന പിന്നത്തെ തലമുറയിലെ ചിലർക്ക് ഈ ധർമ്മ ദൈവങ്ങൾ ഒരു അധിക പറ്റായി. അവർ അതിനെ സൌകര്യപൂർവ്വം വിസ്മരിച്ചു. ചില തറവാടുകളിൽ ചില കുടുംബങ്ങൾ അവരുടെ ക്ഷേത്രങ്ങൾ നിലനിർത്തി.</p>
 
             <p>അങ്ങിനെ ഉള്ള പല ക്ഷേത്രങ്ങളിൽ പലതും ഇന്ന് മഹാ ക്ഷേത്രങ്ങൾ ആയി മാറി ക്കഴിഞ്ഞു എന്നും ചരിത്ര സത്യം..</p>
           </div>
@@ -1220,8 +1188,7 @@
         </div>
 
         <aside class="article-aside">
-          <span lang="en">“Would a guardian deity, whose nature is to bless, ever become angry? No. The family simply comes to share the state of the abandoned shrine — that is all.”</span>
-          <span lang="ml">“അനുഗ്രഹം നല്കേണ്ട ധർമ്മ ദൈവം കോപിയ്ക്കുമൊ? ഇല്ല. അനാഥമായ ദേവസ്ഥാനത്തിന്റെ തുല്യ അവസ്ഥ ആ കുടുംബാദികൾക്കും ഉണ്ടാകുന്നു — അത്രമാത്രം.”</span>
+          <span lang="ml" class="always">“അനുഗ്രഹം നല്കേണ്ട ധർമ്മ ദൈവം കോപിയ്ക്കുമൊ? ഇല്ല. അനാഥമായ ദേവസ്ഥാനത്തിന്റെ തുല്യ അവസ്ഥ ആ കുടുംബാദികൾക്കും ഉണ്ടാകുന്നു — അത്രമാത്രം.”</span>
           <span class="src"><span lang="en">— from the essay</span><span lang="ml">— ലേഖനത്തിൽ നിന്ന്</span></span>
         </aside>
       </article>
@@ -1235,7 +1202,7 @@
     <div class="section-head">
       <div>
         <span class="eyebrow"><span lang="en">From the Practice</span><span lang="ml">നിമിഷങ്ങൾ</span></span>
-        <div class="ml-h" lang="ml">ചിത്രങ്ങൾ</div>
+        <div class="ml-h">ചിത്രങ്ങൾ</div>
       </div>
       <div>
         <h2><span lang="en">Photographs &amp; film — felicitations, ceremonies, and the everyday <em>nilavilakku.</em></span><span lang="ml">ചിത്രങ്ങളും വീഡിയോയും — ആദരിക്കൽ ചടങ്ങുകൾ, പൂജകൾ, നിത്യവും തെളിയുന്ന <em>നിലവിളക്ക്.</em></span></h2>
@@ -1262,9 +1229,9 @@
         <img loading="lazy" decoding="async" src="assets/award-stage-sm.webp" srcset="assets/award-stage-sm.webp 720w, assets/award-stage.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="Felicitation at Mahamagha Mahotsavam 2026" data-ml-alt="മഹാമാഘ മഹോത്സവം 2026-ലെ ആദരിക്കൽ" />
         <span class="tag">2026</span>
       </div>
-      <div class="tile t-4" data-image="assets/award-group.webp" data-cap="With members of the film fraternity" data-cap-ml="സിനിമ പ്രവർത്തകരോടൊപ്പം">
+      <div class="tile t-4" data-image="assets/award-group.webp" data-cap="സിനിമ പ്രവർത്തകരോടൊപ്പം" data-cap-ml="സിനിമ പ്രവർത്തകരോടൊപ്പം">
         <img loading="lazy" decoding="async" src="assets/award-group-sm.webp" srcset="assets/award-group-sm.webp 720w, assets/award-group.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="With members of the film fraternity" data-ml-alt="സിനിമ പ്രവർത്തകരോടൊപ്പം" />
-        <span class="tag"><span lang="en">With the film fraternity</span><span lang="ml">സിനിമ പ്രവർത്തകരോടൊപ്പം</span></span>
+        <span class="tag"><span lang="ml" class="always">സിനിമ പ്രവർത്തകരോടൊപ്പം</span></span>
       </div>
       <div class="tile t-5" data-image="assets/certificate.webp" data-cap="Visiting card · Jyothishakendram" data-cap-ml="വിസിറ്റിംഗ് കാർഡ് · Jyothishakendram">
         <img loading="lazy" decoding="async" src="assets/certificate-sm.webp" srcset="assets/certificate-sm.webp 720w, assets/certificate.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="Jyothishakendram visiting card" data-ml-alt="Jyothishakendram വിസിറ്റിംഗ് കാർഡ്" />
@@ -1277,7 +1244,7 @@
       <div class="tile t-6" data-image="assets/temple-prashnam.webp" data-cap="Ashtamangala Prashnam — temple courtyard" data-cap-ml="അഷ്ടമംഗല പ്രശ്നം — ക്ഷേത്രാങ്കണത്തിൽ">
         <img loading="lazy" decoding="async" src="assets/temple-prashnam-sm.webp" srcset="assets/temple-prashnam-sm.webp 720w, assets/temple-prashnam.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="Ashtamangala Prashnam in progress at a temple courtyard" data-ml-alt="ക്ഷേത്രാങ്കണത്തിൽ നടക്കുന്ന അഷ്ടമംഗല പ്രശ്നം" />
         <span class="tag"><span lang="en">Prashnam</span><span lang="ml">പ്രശ്നം</span></span>
-        <div class="caption-b"><span lang="en">At the Ashtamangala Prashnam</span><span lang="ml">അഷ്ടമംഗല്യ പ്രശ്ന വേദിയിൽ</span></div>
+        <div class="caption-b"><span lang="ml" class="always">അഷ്ടമംഗല്യ പ്രശ്ന വേദിയിൽ</span></div>
       </div>
       <div class="tile t-7" data-image="assets/work-desk.webp" data-cap="At the work desk — Pazhayanadakkavu" data-cap-ml="ജോലി മേശയിൽ — പഴയനടക്കാവ്">
         <img loading="lazy" decoding="async" src="assets/work-desk-sm.webp" srcset="assets/work-desk-sm.webp 720w, assets/work-desk.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="At the work desk — Pazhayanadakkavu" data-ml-alt="ജോലി മേശയിൽ — പഴയനടക്കാവ്" />
@@ -1299,7 +1266,7 @@
     <div class="section-head">
       <div>
         <span class="eyebrow" style="color:var(--brass-soft)"><span lang="en">Visit · Request</span><span lang="ml">ബന്ധപ്പെടാം</span></span>
-        <div class="ml-h" lang="ml" style="color:#e8d8a8">സന്ദർശനം</div>
+        <div class="ml-h" style="color:#e8d8a8">സന്ദർശനം</div>
       </div>
       <div>
         <h2><span lang="en">Consultations are by <em>appointment.</em><br/>The clinic sits beside Thrissur Round.</span><span lang="ml">കൺസൾട്ടേഷൻ <em>മുൻകൂട്ടി ബുക്ക് ചെയ്ത്</em> മാത്രം.<br/>ക്ലിനിക്ക് തൃശ്ശൂർ റൗണ്ടിനരികിലാണ്.</span></h2>
@@ -1314,7 +1281,7 @@
         <div class="v-block">
           <span class="label"><span lang="en">Address</span><span lang="ml">വിലാസം</span></span>
           <div class="v fs21" lang="en">Narayana Building, near Nalandha Hotel,<br/>Round West, Pazhayanadakkavu, Thrissur — 1</div>
-          <div class="v ml fs21" lang="ml">നാരായണ ബിൽഡിംഗ്, നളന്ദ ഹോട്ടലിന് അരികെ മുകളിൽ,<br/>റൗണ്ട് വെസ്റ്റ്, പഴയനടക്കാവ്, തൃശ്ശൂർ — 1</div>
+          <div class="v ml fs21 always" lang="ml">നാരായണ ബിൽഡിംഗ്, നളന്ദ ഹോട്ടലിന് അരികെ മുകളിൽ,<br/>റൗണ്ട് വെസ്റ്റ്, പഴയനടക്കാവ്, തൃശ്ശൂർ — 1</div>
         </div>
 
         <div class="v-block">
@@ -1344,6 +1311,7 @@
 
       <div class="form-card" id="formCard">
         <h3><span lang="en">Request a consultation</span><span lang="ml">കൺസൾട്ടേഷൻ അഭ്യർത്ഥിക്കുക</span></h3>
+        <p class="ml-sub always only-en" lang="ml" style="font-size: clamp(18px, calc(18px + 0.485vw - 1.82px), 22px)">കൺസൾട്ടേഷൻ അഭ്യർത്ഥിക്കുക</p>
         <form id="bookForm">
           <div class="field-row">
             <div class="field">
@@ -1382,7 +1350,7 @@
           <button class="cta" type="submit"><span lang="en">Send Request</span><span lang="ml">അഭ്യർത്ഥന അയയ്ക്കുക</span> <span aria-hidden="true">→</span></button>
         </form>
         <div class="form-thanks">
-          <span lang="en">Your request has been noted.<br/>You will hear back on WhatsApp shortly.</span>
+          <span lang="en">Your request has been noted.<br/>You will hear back on WhatsApp shortly.<br/><span style="font-family:var(--mal);font-style:normal;font-size:16px;display:block;margin-top:14px">നന്ദി. ഉടൻ ബന്ധപ്പെടും.</span></span>
           <span lang="ml">നിങ്ങളുടെ അഭ്യർത്ഥന ലഭിച്ചു.<br/>ഉടൻ വാട്സ്ആപ്പിൽ ബന്ധപ്പെടും. നന്ദി.</span>
         </div>
       </div>
@@ -1417,8 +1385,7 @@
     <div class="small" style="text-align:right">
       © Jyothishakendram, 2026.<br/>
       <span lang="en">Site by family request.</span><span lang="ml">കുടുംബത്തിന്റെ അഭ്യർത്ഥനപ്രകാരം തയ്യാറാക്കിയത്.</span><br/>
-      <span class="blessing" lang="en">Sarvam Sri Gurucharanarpanamastu — all is offered at the Guru's feet.</span>
-      <span class="blessing" lang="ml">സർവ്വം ശ്രീ ഗുരുചരണാർപ്പണമസ്തു.</span>
+      <span class="blessing always" lang="ml">സർവ്വം ശ്രീ ഗുരുചരണാർപ്പണമസ്തു.</span>
     </div>
   </div>
 </footer>

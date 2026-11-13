@@ -26,7 +26,7 @@
     }
   };
   const root = document.documentElement;
-  let lang = root.getAttribute('data-lang') === 'ml' ? 'ml' : 'en';
+  let lang = root.getAttribute('data-lang') === 'en' ? 'en' : 'ml';
   const t = (k) => STR[lang][k];
   const langListeners = [];
 
@@ -67,7 +67,7 @@
       if (Math.abs(delta) > 1) window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
     }
     if (fromUser) {
-      try { localStorage.setItem('jk-lang', lang); } catch (_) {}
+      try { sessionStorage.setItem('jk-lang', lang); } catch (_) {}
     }
   }
 
