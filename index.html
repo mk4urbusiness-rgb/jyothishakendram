@@ -662,7 +662,9 @@
   .services{background:var(--paper)}
 
   /* ──────────────  Services — five compact cards  ────────────── */
-  .svc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+  .svc-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media (max-width:1100px){ .svc-cards{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:600px){ .svc-cards{grid-template-columns:1fr} }
   .svc-card{
     background:var(--cream);border:1px solid var(--rule);border-top:3px solid var(--brass);
     padding:26px 22px 24px;display:flex;flex-direction:column;gap:6px;
@@ -675,8 +677,38 @@
   html[data-lang="ml"] .svc-card p{line-height:1.8}
   .svc-cta{margin-top:36px;display:flex;justify-content:center}
 
+  /* ──────────────  Honours with pictures  ────────────── */
+  .honours{margin-top:64px}
+  .honour-grid{margin-top:22px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  @media (max-width:1100px){ .honour-grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:560px){ .honour-grid{grid-template-columns:1fr} }
+  .honour{margin:0;background:var(--cream);border:1px solid var(--rule);display:flex;flex-direction:column}
+  .honour-fig{aspect-ratio:4/3;overflow:hidden;background:var(--cream-2);border-bottom:1px solid var(--rule);cursor:zoom-in}
+  .honour-fig img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+  .honour-fig:hover img{transform:scale(1.03)}
+  .honour-fig--doc{background:#efe6cf;padding:10px}
+  .honour-fig--doc img{object-fit:contain}
+  .honour-fig--blank{cursor:default;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%, #f3e2b6 0%, var(--cream-2) 70%)}
+  .hm-mark{width:72px;height:72px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:2px;background:var(--brass);opacity:.8}
+  .hm-mark span{background:var(--cream-2)}
+  .hm-mark span:nth-child(1),.hm-mark span:nth-child(4),.hm-mark span:nth-child(13),.hm-mark span:nth-child(16),
+  .hm-mark span:nth-child(6),.hm-mark span:nth-child(7),.hm-mark span:nth-child(10),.hm-mark span:nth-child(11){background:var(--brass-soft)}
+  .honour figcaption{padding:16px 18px 20px;display:flex;flex-direction:column;gap:8px}
+  .honour .h-text{font-size:16px;line-height:1.55;color:var(--ink)}
+  html[data-lang="ml"] .honour .h-text{line-height:1.75}
+
+  /* Visit: book by phone line + ways-to-consult list */
+  .book-call{margin:18px 0 0;font-family:var(--sans);font-size:17px;color:#fbecc8;line-height:1.7}
+  html[data-lang="ml"] .book-call{font-size:18px}
+  .book-call a{color:#fbecc8;font-weight:600;border-bottom:1px solid var(--brass-soft);white-space:nowrap}
+  .book-call a:hover{color:#fff}
+  .book-call .sep{color:var(--brass-soft);margin:0 4px}
+  .mode-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .mode-list li{display:flex;align-items:center;gap:10px}
+  .mode-list li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brass-soft);flex-shrink:0}
+
   /* ──────────────  Google reviews  ────────────── */
-  .reviews{margin-top:72px;padding-top:56px;border-top:1px solid var(--rule)}
+  .reviews{margin-top:64px;padding-top:56px;border-top:1px solid var(--rule)}
   .reviews-head{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
   .reviews-title{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3vw,40px);line-height:1.1;margin:0}
   html[data-lang="ml"] .reviews-title{font-size:clamp(24px,2.6vw,34px);line-height:1.35}
@@ -937,8 +969,8 @@
         <p class="mal-title"><span lang="ml" class="always only-en">ജ്യോതിഷകേന്ദ്രം · ശ്രീ രമേഷ് പണിക്കർ</span><span lang="ml"><span class="brand-word">Jyothishakendram</span> · ശ്രീ രമേഷ് പണിക്കർ</span></p>
 
         <p class="lede">
-          <span lang="en">A Kerala Jyothisha practice in the classical Parashara tradition — counsel offered with patience, in Malayalam, English and Tamil, from Jyothishakendram beside Thrissur Round.</span>
-          <span lang="ml">പരമ്പരാഗത പരാശര സമ്പ്രദായത്തിലുള്ള കേരളീയ ജ്യോതിഷം — തൃശ്ശൂർ റൗണ്ടിനരികിലെ ജ്യോതിഷകേന്ദ്രത്തിൽ നിന്ന്, ക്ഷമയോടെ, മലയാളത്തിലും ഇംഗ്ലീഷിലും തമിഴിലും നൽകുന്ന മാർഗ്ഗനിർദ്ദേശം.</span>
+          <span lang="en">A Kerala Jyothisha practice in the classical Parashara tradition — guidance offered in Malayalam, English and Tamil, from Jyothishakendram beside Thrissur Round.</span>
+          <span lang="ml">പരമ്പരാഗത പരാശര സമ്പ്രദായത്തിലുള്ള കേരളീയ ജ്യോതിഷം — തൃശ്ശൂർ റൗണ്ടിനരികിലെ ജ്യോതിഷകേന്ദ്രത്തിൽ നിന്ന്, മലയാളത്തിലും ഇംഗ്ലീഷിലും തമിഴിലും മാർഗ്ഗനിർദ്ദേശം നൽകുന്നു.</span>
         </p>
 
         <div class="hero-actions">
@@ -998,7 +1030,6 @@
 
     <div class="about-grid">
       <div class="about-img">
-        <span class="stamp"><span lang="en">Consultation Room · Thrissur</span><span lang="ml">കൺസൾട്ടേഷൻ മുറി · തൃശ്ശൂർ</span></span>
         <img loading="lazy" decoding="async" src="assets/work-desk-sm.webp" srcset="assets/work-desk-sm.webp 720w, assets/work-desk.webp 1400w" sizes="(max-width:960px) min(560px, 92vw), 38vw" alt="Sri Ramesh Panicker at his consultation desk — gems, shells and a written jathakam" data-ml-alt="കൺസൾട്ടേഷൻ മേശയിൽ ശ്രീ രമേഷ് പണിക്കർ — രത്നങ്ങൾ, കവടി, എഴുതിയ ജാതകം" />
       </div>
 
@@ -1015,20 +1046,8 @@
 
         <div class="credentials">
           <div class="c">
-            <span class="label"><span lang="en">Conferred</span><span lang="ml">ആദരവ്</span></span>
-            <div class="v fs19"><span lang="en">Honoured by kalari.com, 2025<br/>Mahamagha Mahotsavam, 2026 — felicitated</span><span lang="ml">kalari.com-ൽ നിന്ന് — 2025<br/>മഹാമാഘ മഹോത്സവം, 2026 — ആദരിച്ചു</span></div>
-          </div>
-          <div class="c">
-            <span class="label"><span lang="en">Great Honour</span><span lang="ml">മഹാ അംഗീകാരം</span></span>
-            <div class="v fs19"><span lang="en">Pattum valayum (silk and bangle) and a plaque, from Lakshmi Bai Thampuratti of Padmanabhapuram Palace</span><span lang="ml">പത്മനാഭപുരം കൊട്ടാരം ലക്ഷ്മി ബായി തമ്പുരാട്ടിയിൽ നിന്ന് പട്ടും വളയും ഫലകവും</span></div>
-          </div>
-          <div class="c">
-            <span class="label"><span lang="en">Featured at</span><span lang="ml">പങ്കെടുത്ത വേദി</span></span>
-            <div class="v fs19"><span lang="en">Paper presented at the 50th anniversary of the Kerala Jyothisha Parishath — topic: Sthree Jathaka Vichinthanam</span><span lang="ml">കേരള ജ്യോതിഷ പരിഷത്ത് അമ്പതാം വാർഷികത്തോടനുബന്ധിച്ച് പ്രബന്ധാവതരണം നടത്തി — വിഷയം: സ്ത്രീ ജാതക വിചിന്തനം</span></div>
-          </div>
-          <div class="c">
             <span class="label"><span lang="en">Services</span><span lang="ml">സേവനങ്ങൾ</span></span>
-            <div class="v fs20"><span lang="en">Jathakam · Prashnam · Thamboola Prashnam · Ashtamangala Prashnam · Muhurtham</span><span lang="ml">ജാതകം · പ്രശ്നം · താംബൂല പ്രശ്നം · അഷ്ടമംഗല പ്രശ്നം · മുഹൂർത്തം</span></div>
+            <div class="v fs20"><span lang="en">Jathakam · Prashnam · Muhurtham · Thamboola Prashnam · Ashtamangala Prashnam</span><span lang="ml">ജാതകം · പ്രശ്നം · മുഹൂർത്തം · താംബൂല പ്രശ്നം · അഷ്ടമംഗല പ്രശ്നം</span></div>
           </div>
         </div>
 
@@ -1039,11 +1058,34 @@
               <div class="role"><span lang="en">Senior Acharya</span><span lang="ml">മുതിർന്ന ആചാര്യൻ</span></div>
               <h4><span lang="en">Sri Ramesh Panicker</span><span lang="ml">ശ്രീ രമേഷ് പണിക്കർ</span></h4>
               <div class="mal-name always only-en" lang="ml">ശ്രീ രമേഷ് പണിക്കർ</div>
-              <p style="font-size: 18px"><span lang="en">Jathakam reading, Ashtamangala Prashnam, parihara &amp; long-form counsel.</span><span lang="ml">ജാതക വിചാരം, അഷ്ടമംഗല പ്രശ്നം, പരിഹാര കർമ്മങ്ങൾ, വിശദമായ മാർഗ്ഗനിർദ്ദേശം.</span></p>
+              <p style="font-size: 18px"><span lang="en">Jathakam reading, Prashnam, Muhurtham, Ashtamangala Prashnam, prashna parihara rites and detailed guidance.</span><span lang="ml">ജാതക വിചാരം, പ്രശ്നം, മുഹൂർത്തം, അഷ്ടമംഗല പ്രശ്നം, പ്രശ്ന പരിഹാര കർമ്മങ്ങൾ, വിശദമായ മാർഗ്ഗനിർദ്ദേശം നൽകുന്നു.</span></p>
             </div>
             <a href="tel:+918086415656" class="phone-btn"><svg class="ph-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg><span class="pb-txt"><span lang="en">Call</span><span lang="ml">വിളിക്കുക</span> · <span class="pb-num">+91 80864 15656</span></span></a>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Honours, each with its picture -->
+    <div class="honours">
+      <span class="eyebrow"><span lang="en">Honours</span><span lang="ml">ബഹുമതികൾ</span></span>
+      <div class="honour-grid">
+        <figure class="honour">
+          <div class="honour-fig" data-image="assets/award-plaque.webp" data-cap="Honoured by kalari.com" data-cap-ml="kalari.com-ൽ നിന്ന് ആദരവ്"><img loading="lazy" decoding="async" src="assets/award-plaque-sm.webp" alt="Award plaque" data-ml-alt="പുരസ്കാര ഫലകം" /></div>
+          <figcaption><span class="label"><span lang="en">Honoured</span><span lang="ml">ആദരവ്</span></span><span class="h-text"><span lang="en">Honoured by kalari.com</span><span lang="ml">kalari.com-ൽ നിന്ന് ആദരവ്</span></span></figcaption>
+        </figure>
+        <figure class="honour">
+          <div class="honour-fig" data-image="assets/award-stage.webp" data-cap="Mahamagha Mahotsavam — felicitation, 2026" data-cap-ml="മഹാമാഘ മഹോത്സവം — ആദരിക്കൽ, 2026"><img loading="lazy" decoding="async" src="assets/award-stage-sm.webp" alt="Felicitation at Mahamagha Mahotsavam 2026" data-ml-alt="മഹാമാഘ മഹോത്സവം 2026-ലെ ആദരിക്കൽ" /></div>
+          <figcaption><span class="label"><span lang="en">Honoured</span><span lang="ml">ആദരവ്</span></span><span class="h-text"><span lang="en">Mahamagha Mahotsavam, 2026 — felicitated</span><span lang="ml">മഹാമാഘ മഹോത്സവം, 2026 — ആദരിച്ചു</span></span></figcaption>
+        </figure>
+        <figure class="honour">
+          <div class="honour-fig honour-fig--blank"><span class="hm-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></div>
+          <figcaption><span class="label"><span lang="en">Great Honour</span><span lang="ml">മഹാ അംഗീകാരം</span></span><span class="h-text"><span lang="en">Received pattum valayum (silk and bangle) and a plaque from Lakshmi Bhai Thampuratti of Padmanabhapuram Palace</span><span lang="ml">പത്മനാഭപുരം കൊട്ടാരം ലക്ഷ്മി ഭായി തമ്പുരാട്ടിയിൽ നിന്ന് പട്ടും വളയും ഫലകവും ലഭിച്ചു</span></span></figcaption>
+        </figure>
+        <figure class="honour">
+          <div class="honour-fig honour-fig--doc" data-image="assets/parishath-certificate.webp" data-cap="Paper presentation · ‘Sthree Jathaka Vichinthanam’ · Kerala Jyothisha Parishath 50th anniversary, Thrissur · 07.04.2026" data-cap-ml="പ്രബന്ധാവതരണം · ‘സ്ത്രീ ജാതക വിചിന്തനം’ · കേരള ജ്യോതിഷ പരിഷത്ത് അമ്പതാം വാർഷികം, തൃശ്ശൂർ · 07.04.2026"><img loading="lazy" decoding="async" src="assets/parishath-certificate-sm.webp" alt="Kerala Jyothisha Parishath certificate" data-ml-alt="കേരള ജ്യോതിഷ പരിഷത്ത് സർട്ടിഫിക്കറ്റ്" /></div>
+          <figcaption><span class="h-text"><span lang="en">Presenting a paper on ‘Sthree Jathaka Vichinthanam’ at the 50th anniversary of the Kerala Jyothisha Parishath</span><span lang="ml">കേരള ജ്യോതിഷ പരിഷത്ത് അമ്പതാം വാർഷികത്തോടനുബന്ധിച്ച് ‘സ്ത്രീ ജാതക വിചിന്തനം’ എന്ന വിഷയത്തിൽ പ്രബന്ധാവതരണം നടത്തുന്നു</span></span></figcaption>
+        </figure>
       </div>
     </div>
 
@@ -1090,7 +1132,7 @@
         <video src="assets/feature-video.mp4" muted loop playsinline preload="metadata"></video>
         <span class="tag"><span lang="en">Pooja · 0:30</span><span lang="ml">പൂജ · 0:30</span></span>
         <div class="play-icon"><span></span></div>
-        <div class="caption-b"><span lang="en">A short film from the consultation room</span><span lang="ml">കൺസൾട്ടേഷൻ മുറിയിൽ നിന്നുള്ള ഒരു ചെറു വീഡിയോ</span></div>
+        <div class="caption-b"><span lang="en">Ozhivu, during parihara rites</span><span lang="ml">പരിഹാര കർമ്മങ്ങളിൽ ഒഴിവു നോക്കുന്നു</span></div>
       </div>
       <div class="tile t-1" data-image="assets/award-plaque.webp" data-cap="Award plaque · 2024" data-cap-ml="പുരസ്കാര ഫലകം · 2024">
         <img loading="lazy" decoding="async" src="assets/award-plaque-sm.webp" srcset="assets/award-plaque-sm.webp 720w, assets/award-plaque.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="Award plaque, 2024" data-ml-alt="പുരസ്കാര ഫലകം, 2024" />
@@ -1114,16 +1156,13 @@
       </div>
       <div class="tile t-5" data-image="assets/parishath-certificate.webp" data-cap="Paper presentation · ‘Sthree Jathaka Vichinthanam’ · Kerala Jyothisha Parishath 50th anniversary, Thrissur · 07.04.2026" data-cap-ml="പ്രബന്ധാവതരണം · ‘സ്ത്രീ ജാതക വിചിന്തനം’ · കേരള ജ്യോതിഷ പരിഷത്ത് അമ്പതാം വാർഷികം, തൃശ്ശൂർ · 07.04.2026">
         <img loading="lazy" decoding="async" src="assets/parishath-certificate-sm.webp" srcset="assets/parishath-certificate-sm.webp 720w, assets/parishath-certificate.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="Certificate from Kerala Jyothisha Parishath — paper presentation on Sthree Jathaka Vichinthanam, 07.04.2026" data-ml-alt="കേരള ജ്യോതിഷ പരിഷത്തിന്റെ സർട്ടിഫിക്കറ്റ് — ‘സ്ത്രീ ജാതക വിചിന്തനം’ പ്രബന്ധാവതരണം, 07.04.2026" />
-        <span class="tag"><span lang="en">Parishath · 2026</span><span lang="ml">പരിഷത്ത് · 2026</span></span>
       </div>
       <div class="tile t-6" data-image="assets/temple-prashnam.webp" data-cap="Ashtamangala Prashnam — temple courtyard" data-cap-ml="അഷ്ടമംഗല പ്രശ്നം — ക്ഷേത്രാങ്കണത്തിൽ">
         <img loading="lazy" decoding="async" src="assets/temple-prashnam-sm.webp" srcset="assets/temple-prashnam-sm.webp 720w, assets/temple-prashnam.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="Ashtamangala Prashnam in progress at a temple courtyard" data-ml-alt="ക്ഷേത്രാങ്കണത്തിൽ നടക്കുന്ന അഷ്ടമംഗല പ്രശ്നം" />
-        <span class="tag"><span lang="en">Prashnam</span><span lang="ml">പ്രശ്നം</span></span>
         <div class="caption-b"><span lang="ml" class="always">അഷ്ടമംഗല്യ പ്രശ്ന വേദിയിൽ</span></div>
       </div>
       <div class="tile t-7" data-image="assets/work-desk.webp" data-cap="At the work desk — Pazhayanadakkavu" data-cap-ml="ജോലി മേശയിൽ — പഴയനടക്കാവ്">
         <img loading="lazy" decoding="async" src="assets/work-desk-sm.webp" srcset="assets/work-desk-sm.webp 720w, assets/work-desk.webp 1400w" sizes="(max-width:600px) 92vw, (max-width:1100px) 46vw, 410px" alt="At the work desk — Pazhayanadakkavu" data-ml-alt="ജോലി മേശയിൽ — പഴയനടക്കാവ്" />
-        <span class="tag"><span lang="en">Workspace</span><span lang="ml">ജോലിസ്ഥലം</span></span>
       </div>
     </div>
   </div>
@@ -1134,45 +1173,59 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <span class="eyebrow"><span lang="en">What is offered</span><span lang="ml">ഇവിടെ ലഭിക്കുന്നത്</span></span>
+        <span class="eyebrow only-en">Services</span>
         <div class="ml-h">സേവനങ്ങൾ</div>
-      </div>
-      <div>
-        <h2><span lang="en">Five classical readings — held to <em>shastra,</em> not shortcut.</span><span lang="ml">അഞ്ച് ശാസ്ത്രീയ വിചാരങ്ങൾ — കുറുക്കുവഴികളല്ല, <em>ശാസ്ത്രം</em> അനുസരിച്ച്.</span></h2>
-        <p class="lead fs22"><span lang="en">Each reading takes the time it takes; no consultation is hurried into another.</span><span lang="ml">ഓരോ വിചാരത്തിനും ആവശ്യമായ സമയം എടുക്കുന്നു; ഒരു കൺസൾട്ടേഷനും തിരക്കിട്ട് തീർക്കാറില്ല.</span></p>
       </div>
     </div>
 
     <div class="svc-cards">
       <div class="svc-card">
         <span class="svc-no">01</span>
-        <h3><span lang="en">Prashnam</span><span lang="ml">പ്രശ്നം</span></h3>
-        <div class="svc-ml always only-en" lang="ml">പ്രശ്നം</div>
-        <p><span lang="en">Answers read from the moment your question is asked.</span><span lang="ml">ചോദ്യം ചോദിക്കുന്ന സമയത്തെ ആധാരമാക്കിയുള്ള ഉത്തരം.</span></p>
-      </div>
-      <div class="svc-card">
-        <span class="svc-no">02</span>
-        <h3><span lang="en">Ashtamangala Prashnam</span><span lang="ml">അഷ്ടമംഗല പ്രശ്നം</span></h3>
-        <div class="svc-ml always only-en" lang="ml">അഷ്ടമംഗല പ്രശ്നം</div>
-        <p><span lang="en">The elaborate eight-fold prashnam for temples and families; takes more than half a day.</span><span lang="ml">ക്ഷേത്രങ്ങൾക്കും കുടുംബങ്ങൾക്കുമായുള്ള വിശദമായ പ്രശ്നവിചാരം; അര ദിവസത്തിലധികം വേണ്ടിവരും.</span></p>
-      </div>
-      <div class="svc-card">
-        <span class="svc-no">03</span>
-        <h3><span lang="en">Thamboola Prashnam</span><span lang="ml">താംബൂല പ്രശ്നം</span></h3>
-        <div class="svc-ml always only-en" lang="ml">താംബൂല പ്രശ്നം</div>
-        <p><span lang="en">Prashnam read through the betel leaf (thamboolam).</span><span lang="ml">വെറ്റില (താംബൂലം) ആധാരമാക്കിയുള്ള പ്രശ്നവിചാരം.</span></p>
-      </div>
-      <div class="svc-card">
-        <span class="svc-no">04</span>
         <h3><span lang="en">Jathakam</span><span lang="ml">ജാതക പരിശോധന</span></h3>
         <div class="svc-ml always only-en" lang="ml">ജാതകം</div>
         <p><span lang="en">A careful reading of the birth chart, across a life.</span><span lang="ml">ജനന ഗ്രഹനിലയുടെ സമഗ്രമായ പരിശോധന.</span></p>
       </div>
       <div class="svc-card">
-        <span class="svc-no">05</span>
+        <span class="svc-no">02</span>
+        <h3><span lang="en">Prashnam</span><span lang="ml">പ്രശ്നം</span></h3>
+        <div class="svc-ml always only-en" lang="ml">പ്രശ്നം</div>
+        <p><span lang="en">Answers read from the moment your question is asked.</span><span lang="ml">ചോദ്യം ചോദിക്കുന്ന സമയത്തെ ആധാരമാക്കിയുള്ള ഉത്തരം.</span></p>
+      </div>
+      <div class="svc-card">
+        <span class="svc-no">03</span>
         <h3><span lang="en">Muhurtham</span><span lang="ml">മുഹൂർത്തം</span></h3>
         <div class="svc-ml always only-en" lang="ml">മുഹൂർത്തം</div>
         <p><span lang="en">The auspicious hour for marriage, gruhapravesham and new beginnings.</span><span lang="ml">വിവാഹം, ഗൃഹപ്രവേശം, പുതിയ സംരംഭങ്ങൾ എന്നിവയ്ക്ക് ശുഭ മുഹൂർത്തം.</span></p>
+      </div>
+      <div class="svc-card">
+        <span class="svc-no">04</span>
+        <h3><span lang="en">Thamboola Prashnam</span><span lang="ml">താംബൂല പ്രശ്നം</span></h3>
+        <div class="svc-ml always only-en" lang="ml">താംബൂല പ്രശ്നം</div>
+        <p><span lang="en">Prashnam read through the betel leaf (thamboolam).</span><span lang="ml">വെറ്റില (താംബൂലം) ആധാരമാക്കിയുള്ള പ്രശ്നവിചാരം.</span></p>
+      </div>
+      <div class="svc-card">
+        <span class="svc-no">05</span>
+        <h3><span lang="en">Ashtamangala Prashnam</span><span lang="ml">അഷ്ടമംഗല പ്രശ്നം</span></h3>
+        <div class="svc-ml always only-en" lang="ml">അഷ്ടമംഗല പ്രശ്നം</div>
+        <p><span lang="en">The elaborate eight-fold prashnam for temples and families.</span><span lang="ml">ക്ഷേത്രങ്ങൾക്കും കുടുംബങ്ങൾക്കുമായുള്ള വിശദമായ പ്രശ്നവിചാരം.</span></p>
+      </div>
+      <div class="svc-card">
+        <span class="svc-no">06</span>
+        <h3><span lang="en">Vivaha Charcha</span><span lang="ml">വിവാഹ ചർച്ച</span></h3>
+        <div class="svc-ml always only-en" lang="ml">വിവാഹ ചർച്ച</div>
+        <p><span lang="en">Examining the bond between man and woman, to make the marriage secure.</span><span lang="ml">സ്ത്രീപുരുഷ ബന്ധം പരിശോധിച്ച് ദാമ്പത്യ ബന്ധം ഉറപ്പിക്കുന്നതിനു വേണ്ടി.</span></p>
+      </div>
+      <div class="svc-card">
+        <span class="svc-no">07</span>
+        <h3><span lang="en">Land &amp; Vasthu</span><span lang="ml">ഭൂമി, വാസ്തു വിഷയങ്ങൾ</span></h3>
+        <div class="svc-ml always only-en" lang="ml">ഭൂമി, വാസ്തു</div>
+        <p><span lang="en">Guidance on matters of land and vasthu.</span><span lang="ml">ഭൂമി, വാസ്തു സംബന്ധമായ വിഷയങ്ങളിൽ മാർഗ്ഗനിർദ്ദേശം.</span></p>
+      </div>
+      <div class="svc-card">
+        <span class="svc-no">08</span>
+        <h3><span lang="en">Other Matters</span><span lang="ml">മറ്റു വിഷയങ്ങൾ</span></h3>
+        <div class="svc-ml always only-en" lang="ml">മറ്റു വിഷയങ്ങൾ</div>
+        <p><span lang="en">Education, obstacles to marriage, wealth, debt, obstacles in work — every matter one faces in life is examined.</span><span lang="ml">വിദ്യാഭ്യാസം, വിവാഹ തടസ്സം, ധനം, കടം, കർമ്മതടസ്സം തുടങ്ങി ജീവിതത്തിൽ നേരിടുന്ന എല്ലാ വിഷയങ്ങളും പരിശോധിക്കുന്നു.</span></p>
       </div>
     </div>
     <div class="svc-cta"><a href="#visit" class="cta"><span lang="en">Request a Consultation</span><span lang="ml">കൺസൾട്ടേഷൻ ബുക്ക് ചെയ്യുക</span> <span aria-hidden="true">→</span></a></div>
@@ -1185,10 +1238,9 @@
     <div class="section-head">
       <div>
         <span class="eyebrow"><span lang="en">Listen In</span><span lang="ml">കേൾക്കാം</span></span>
-        <div class="ml-h" style="color:#e8d8a8">പരിചയം</div>
       </div>
       <div>
-        <h2><span lang="en">A brief introduction to the practice.</span><span lang="ml">ഞങ്ങളെക്കുറിച്ച് ഒരു ചെറു പരിചയം.</span></h2>
+        <h2><span lang="en">A brief introduction.</span><span lang="ml">ഒരു ചെറു പരിചയപ്പെടുത്തൽ.</span></h2>
       </div>
     </div>
 
@@ -1235,11 +1287,11 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <span class="eyebrow"><span lang="en">Writings</span><span lang="ml">ആചാര്യന്റെ തൂലികയിൽ</span></span>
+        <span class="eyebrow only-en">Writings</span>
         <div class="ml-h">എഴുത്തുകൾ</div>
       </div>
       <div>
-        <h2><span lang="en">A few essays by the Acharya.</span><span lang="ml">ആചാര്യന്റെ ചില ലേഖനങ്ങൾ.</span></h2>
+        <h2><span lang="en">A few essays.</span><span lang="ml">ചില ലേഖനങ്ങൾ.</span></h2>
       </div>
     </div>
 
@@ -1350,13 +1402,14 @@
       </div>
       <div>
         <h2><span lang="en">It is best to book your consultation <em>in advance.</em><br/>Jyothishakendram is beside the Round, in front of the Vadakkunnathan Temple, Thrissur.</span><span lang="ml">കൺസൾട്ടേഷൻ <em>മുൻകൂട്ടി ബുക്ക് ചെയ്യുന്നത്</em> നല്ലത്.<br/><span class="brand-word">Jyothishakendram</span> തൃശ്ശൂർ വടക്കുന്നാഥ ക്ഷേത്രത്തിനു മുന്നിൽ, റൗണ്ടിനരികിലാണ്.</span></h2>
+        <p class="book-call"><span lang="en">You can also book by calling directly:</span><span lang="ml">നേരിട്ട് വിളിച്ചും ബുക്ക് ചെയ്യാം:</span> <a href="tel:+918086415656">+91 80864 15656</a> <span class="sep">·</span> <a href="tel:+919495551230">+91 94955 51230</a></p>
         <p class="lead fs21"><span lang="en">Write a short note on the matter at hand; you will be reached by WhatsApp with a confirmed time, usually within a day.</span><span lang="ml">നിങ്ങളുടെ വിഷയത്തെക്കുറിച്ച് ഒരു ചെറു കുറിപ്പ് എഴുതുക; സാധാരണയായി ഒരു ദിവസത്തിനകം, ഉറപ്പിച്ച സമയവുമായി വാട്സ്ആപ്പ് വഴി ബന്ധപ്പെടും.</span></p>
       </div>
     </div>
 
     <div class="visit-grid">
       <div class="v-info">
-        <h3><span lang="en">Narayana Building, Round West</span><span lang="ml">നാരായണ ബിൽഡിംഗ്, റൗണ്ട് വെസ്റ്റ്</span></h3>
+        <h3><span lang="en">Narayana Building, Round West, Thrissur</span><span lang="ml">നാരായണ ബിൽഡിംഗ്, റൗണ്ട് വെസ്റ്റ്, തൃശ്ശൂർ</span></h3>
 
         <div class="v-block">
           <span class="label"><span lang="en">Address</span><span lang="ml">വിലാസം</span></span>
@@ -1377,12 +1430,17 @@
 
         <div class="v-block">
           <span class="label"><span lang="en">Hours</span><span lang="ml">സമയം</span></span>
-          <div class="v fs21"><span lang="en">Monday — Saturday · 9:30 am to 6:30 pm</span><span lang="ml">തിങ്കൾ — ശനി · രാവിലെ 9:30 മുതൽ വൈകിട്ട് 6:30 വരെ</span><br/><span class="fs21" style="color: rgba(245,233,208,0.6)"><span lang="en">For other times, please call.</span><span lang="ml">മറ്റു സമയങ്ങളിൽ വേണ്ടവർ വിളിക്കുക.</span></span></div>
+          <div class="v fs21"><span lang="en">Monday — Saturday · 9:30 am to 6:30 pm</span><span lang="ml">തിങ്കൾ — ശനി · രാവിലെ 9:30 മുതൽ വൈകിട്ട് 6:30 വരെ</span></div>
         </div>
 
         <div class="v-block">
-          <span class="label"><span lang="en">Modes</span><span lang="ml">രീതികൾ</span></span>
-          <div class="v fs21"><span lang="en">In-person · WhatsApp · Google Meet · Phone</span><span lang="ml">നേരിട്ട് · വാട്സ്ആപ്പ് · ഗൂഗിൾ മീറ്റ് · ഫോൺ</span><br/><span style="color:rgba(245,233,208,0.6);font-size:15px"><span lang="en">Ashtamangala Prashnam is in-person only.</span><span lang="ml">അഷ്ടമംഗല പ്രശ്നം നേരിട്ട് മാത്രം.</span></span></div>
+          <span class="label"><span lang="en">Ways to consult</span><span lang="ml">ബന്ധപ്പെടേണ്ട രീതികൾ</span></span>
+          <ul class="v fs21 mode-list">
+            <li><span lang="en">In person</span><span lang="ml">നേരിട്ട്</span></li>
+            <li><span lang="en">WhatsApp</span><span lang="ml">വാട്സ്ആപ്പ്</span></li>
+            <li><span lang="en">Google Meet</span><span lang="ml">ഗൂഗിൾ മീറ്റ്</span></li>
+            <li><span lang="en">Phone</span><span lang="ml">ഫോൺ</span></li>
+          </ul>
         </div>
       </div>
 
@@ -1404,11 +1462,14 @@
             <div class="field">
               <label for="f-service"><span lang="en">Reading</span><span lang="ml">സേവനം</span></label>
               <select id="f-service">
-                <option value="prashnam" data-ml-text="പ്രശ്നം — ഒരു ചോദ്യം">Prashnam — single question</option>
                 <option value="jathakam" data-ml-text="ജാതകം — സമ്പൂർണ്ണ ജാതക വിചാരം">Jathakam — full natal reading</option>
+                <option value="prashnam" data-ml-text="പ്രശ്നം — ഒരു ചോദ്യം">Prashnam — single question</option>
                 <option value="muhurtham" data-ml-text="മുഹൂർത്തം — ശുഭ സമയം">Muhurtham — auspicious hour</option>
-                <option value="ashtamangala" data-ml-text="അഷ്ടമംഗല പ്രശ്നം — വിശദ വിചാരം">Ashtamangala Prashnam — long reading</option>
                 <option value="thamboola" data-ml-text="താംബൂല പ്രശ്നം">Thamboola Prashnam</option>
+                <option value="ashtamangala" data-ml-text="അഷ്ടമംഗല പ്രശ്നം — വിശദ വിചാരം">Ashtamangala Prashnam — long reading</option>
+                <option value="vivaha" data-ml-text="വിവാഹ ചർച്ച">Vivaha Charcha — marriage</option>
+                <option value="vasthu" data-ml-text="ഭൂമി, വാസ്തു വിഷയങ്ങൾ">Land &amp; Vasthu matters</option>
+                <option value="other" data-ml-text="മറ്റു വിഷയങ്ങൾ">Other matters</option>
                 <option value="unsure" data-ml-text="ഉറപ്പില്ല — നിർദ്ദേശിക്കുക">Not sure — please advise</option>
               </select>
             </div>
@@ -1423,7 +1484,7 @@
             </div>
           </div>
           <div class="field">
-            <label for="f-note"><span lang="en">A short note on the matter</span><span lang="ml">വിഷയത്തെക്കുറിച്ച് ഒരു ചെറു കുറിപ്പ്</span></label>
+            <label for="f-note"><span lang="en">A short note on the matter (optional)</span><span lang="ml">വിഷയത്തെക്കുറിച്ച് ഒരു ചെറു കുറിപ്പ് (നിർബന്ധമില്ല)</span></label>
             <textarea id="f-note" placeholder="A line or two is enough — Acharya prepares the reading from this." data-ml-placeholder="ഒന്നോ രണ്ടോ വരി മതി — ഇതിൽ നിന്നാണ് ആചാര്യൻ വിചാരം തയ്യാറാക്കുന്നത്."></textarea>
           </div>
           <button class="cta" type="submit"><span lang="en">Send Request</span><span lang="ml">അഭ്യർത്ഥന അയയ്ക്കുക</span> <span aria-hidden="true">→</span></button>

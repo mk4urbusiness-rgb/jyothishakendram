@@ -167,7 +167,7 @@
   lb.addEventListener('click', (e) => { if (e.target === lb || e.target === lbFrame) closeLb(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLb(); });
 
-  document.querySelectorAll('.tile').forEach(tile => {
+  document.querySelectorAll('.tile, .honour-fig[data-image]').forEach(tile => {
     tile.addEventListener('click', () => {
       if (tile.dataset.video) {
         openLb(`<video src="${tile.dataset.video}" controls autoplay playsinline></video>`);
